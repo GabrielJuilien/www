@@ -25,13 +25,47 @@
         {
           include "client-left.php";
         }
+        if($_SESSION['user_id'] == 1)
+        {
+
+        }
+        if($_SESSION['user_id'] == 2)
+        {
+          
+        }
       ?>
     </div>
     <div class="mainframe-middle">
-      oui
+      <?php
+        if($_SESSION['user_id'] == 0)
+        {
+          
+        }
+        if($_SESSION['user_id'] == 1)
+        {
+          
+        }
+        if($_SESSION['user_id'] == 2)
+        {
+          
+        }
+      ?>
     </div>
     <div class="mainframe-right">
-      oui
+      <?php
+        if($_SESSION['user_id'] == 0)
+        {
+          
+        }
+        if($_SESSION['user_id'] == 1)
+        {
+          
+        }
+        if($_SESSION['user_id'] == 2)
+        {
+          
+        }
+      ?>
     </div>
     <?php
   }
