@@ -7,7 +7,7 @@
   <?php
   session_start();
 
-  class Roles extends SplEnum {
+  class Roles{
     const __default = self::Basic;
     const Basic = 0;
     const Operator = 1;
