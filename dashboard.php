@@ -1,6 +1,6 @@
 <html>
   <head>
-    <title>DashBoard</title>
+    <title>Dashboard</title>
     <link rel="stylesheet" href="style/helpdesk.css"/>
   </head>
   <body>
@@ -24,7 +24,7 @@
   }
 
   if (!isset($_SESSION['user_id'])) { //If user is not already logged in
-      if (empty($_POST['user_login']) || empty($_POST['user_password'])) {
+      if (!isset($_POST['user_login']) || !isset($_POST['user_password'])) {
         ?>
         <div>
           You have to be logged in to access your dashboard. You can <a href="login.php">login here.</a>
@@ -41,7 +41,7 @@
         $req->execute();
         if (!empty($req)) { //User exists in the database
           $data = $req->fetch();
-          if (!strcmp(hash("sha256", $_POST['user_password'] + $data['Password_Salt']), $data['Password_Imprint'])) { //If passwords hashes match
+          if (!strcmp(hash("sha256", $_POST['user_password'].$data['Password_Salt']), $data['Password_Imprint'])) { //If passwords hashes match
             $_SESSION['user_id'] = $_POST['user_login'];
 
             //Retrieving job/departement informations
