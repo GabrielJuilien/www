@@ -22,8 +22,8 @@ session_start();
 		LEFT JOIN devices_types WHERE	 devices.ID_Device_Type = devices_types.ID_Device_Type 
 		LEFT JOIN solutions WHERE		 relations.ID_solution = solutions.ID_solutions
 		LEFT JOIN problems WHERE		 relations.ID_problem = problem.ID_problem
-		LEFT JOIN departments 
-		LEFT JOIN jobs ");
+		LEFT JOIN departments WHERE 	 employees.ID_Department = departments.ID_Department
+		LEFT JOIN jobs WHERE 			 employees.ID_Job = jobs.ID_Job");
 		$requete->execute(array(":id"=>$_GET['ID_Request']));
 		$res=$requete->fetch();?>
 		<div class = "conteneurticket">
