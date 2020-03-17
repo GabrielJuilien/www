@@ -39,6 +39,8 @@ session_start();
 			<?php echo $res["Department_Name"] ?>
 			<?php echo $res["Job_Name"] ?>
         </div>
+		"test_get.php?subject=PHP&web=W3schools.com"
+		 <a href="editingRequest.php?ticket="<?php echo $_GET['ID_Request']?>>edit ticket</a>	
 </body>
 
 </html>
