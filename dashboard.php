@@ -1,7 +1,7 @@
 <html>
   <head>
     <title>Dashboard</title>
-    <link rel="stylesheet" href="style/helpdesk.css"/>
+    <link rel="stylesheet" href="style/dashboard.css"/>
   </head>
   <body>
   <?php
@@ -46,7 +46,7 @@
 
             //Retrieving job/departement informations
             $req = $bdd->prepare('SELECT departments.Department_Name AS Department_Name, jobs.Job_Name AS Job_Name FROM employees
-              LEFT JOIN departements
+              LEFT JOIN departments
               ON employees.ID_Department = departments.ID_Department
               LEFT JOIN jobs
               ON employees.ID_Job = jobs.ID_Job
@@ -103,20 +103,80 @@
   if (isset($_SESSION['user_id']))
   {
     ?>
-    <div class="mainframe-left">
-      <?php
-        // $user_id = 0;
-        if ($_SESSION['user_role'] == Roles::Basic)
+    <div class="mainframe">
+      <div class="mainframe-left">
+        <?php
+          // $user_id = 0;
+          if ($_SESSION['user_role'] == Roles::Basic)
+          {
+            include "client-left.php";
+          }
+          else if ($_SESSION['user_role'] == Roles::Operator)
+          {
+            include "operator-left.php";
+
+          }
+          else if ($_SESSION['user_role'] == Roles::Specialist)
+          {
+            include "specialist-left.php";
+          }
+          else if ($_SESSION['user_role'] == Roles::Manager)
+          {
+
+          }
+          else if ($_SESSION['user_role'] == Roles::Admin)
+          {
+
+          }
+          else { //Role attribution error
+
+          }
+        ?>
+      </div>
+      <div class="mainframe-middle">
+        <?php
+        if ($_SESSION['user_role'] === Roles::Basic)
         {
-          include "client-left.php";
+          include "client-middle.php";
         }
-        else if ($_SESSION['user_role'] == Roles::Operator)
+        else if ($_SESSION['user_role'] === Roles::Operator)
         {
+          include "operator-specialist-middle.php";
 
         }
         else if ($_SESSION['user_role'] == Roles::Specialist)
         {
+          include "operator-specialist-middle.php";
 
+        }
+        else if ($_SESSION['user_role'] == Roles::Manager)
+        {
+
+        }
+        else if ($_SESSION['user_role'] == Roles::Admin)
+        {
+          include "client-middle.php";
+
+        }
+        else { //Role attribution error
+
+        }
+        ?>
+      </div>
+      <div class="mainframe-right">
+        <?php
+        if ($_SESSION['user_role'] == Roles::Basic)
+        {
+          include "client-right.php";
+        }
+        else if ($_SESSION['user_role'] == Roles::Operator)
+        {
+          include "operator-right.php";
+
+        }
+        else if ($_SESSION['user_role'] == Roles::Specialist)
+        {
+          include "specialist-right.php";
         }
         else if ($_SESSION['user_role'] == Roles::Manager)
         {
@@ -129,61 +189,8 @@
         else { //Role attribution error
 
         }
-      ?>
-    </div>
-    <div class="mainframe-middle">
-      <?php
-      if ($_SESSION['user_role'] == Roles::Basic)
-      {
-        include "client-left.php";
-      }
-      else if ($_SESSION['user_role'] == Roles::Operator)
-      {
-
-      }
-      else if ($_SESSION['user_role'] == Roles::Specialist)
-      {
-
-      }
-      else if ($_SESSION['user_role'] == Roles::Manager)
-      {
-
-      }
-      else if ($_SESSION['user_role'] == Roles::Admin)
-      {
-
-      }
-      else { //Role attribution error
-
-      }
-      ?>
-    </div>
-    <div class="mainframe-right">
-      <?php
-      if ($_SESSION['user_role'] == Roles::Basic)
-      {
-        include "client-left.php";
-      }
-      else if ($_SESSION['user_role'] == Roles::Operator)
-      {
-
-      }
-      else if ($_SESSION['user_role'] == Roles::Specialist)
-      {
-
-      }
-      else if ($_SESSION['user_role'] == Roles::Manager)
-      {
-
-      }
-      else if ($_SESSION['user_role'] == Roles::Admin)
-      {
-
-      }
-      else { //Role attribution error
-
-      }
-      ?>
+        ?>
+      </div>
     </div>
     <?php
   }

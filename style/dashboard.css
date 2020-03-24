@@ -1,0 +1,47 @@
+body
+{
+    background-image: url("../image/html-color-codes-color-tutorials-hero-00e10b1f.jpg");
+}
+
+.mainframe
+{
+  margin: 5vh 2vw 5vh 2vw;
+  display: flex;
+  justify-content: space-around;
+
+}
+
+.mainframe-left
+{
+  margin-right: 3vw;  padding: 2vw 1vw 2vw 1vw;
+  width: 40vw;
+  border: 2px solid;
+  height: 80vh;
+
+  background-color: rgb(231,238,243);
+
+  overflow: auto;
+}
+.mainframe-middle
+{
+  padding: 2vw 1vw 2vw 1vw;
+  width: 50vw;
+  border: 2px solid;
+  height: 80vh;
+
+  background-color: rgb(231,238,243);
+
+  overflow: auto;
+
+}
+.mainframe-right
+{
+  margin-left: 3vw;  padding: 2vw 1vw 2vw 1vw;
+  width: 40vw;
+  border: 2px solid;
+  height: 80vh;
+
+  background-color: rgb(231,238,243);
+
+  overflow: auto;
+}
