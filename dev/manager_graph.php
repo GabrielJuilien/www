@@ -1,28 +1,37 @@
+<!DOCTYPE html>
 <html>
   <head>
   <link rel="stylesheet" href="style/manager_graph.css"/>
   </head>
   <body>
-    <script language="text/javascript">
+    <button id="button">Oui</button>
 
-    function graphDataHandler() {
-      //Testing response status code
-      switch (httpRequest.status) {
-        case 200:
-          break;
-        case 400:
-          return;
-          break;
+    <script>
+
+    var httpRequest = new XMLHttpRequest();
+    document.getElementById("button").addEventListener('click', makeRequest);
+
+
+    function handler() {
+      if (httpRequest.readyState === XMLHttpRequest.DONE) {
+        //Testing response status code
+        switch (httpRequest.status) {
+          case 200:
+            break;
+          case 400:
+            return;
+            break;
+        }
+        var XML = httpRequest.responseText;
+        alert(XML);
       }
-
     }
 
-    httpRequest = new XMLHttpRequest();
-    httpRequest.onreadystatechange = graphDataHandler;
-
-    httpRequest.open('GET', 'getGraphData.php', false);
-    httpRequest.send();
-
+    function makeRequest() {
+      httpRequest.onreadystatechange = handler;
+      httpRequest.open('GET', 'getGraphData.php', true);
+      httpRequest.send();
+    }
     </script>
   </body>
 </html>
