@@ -1,5 +1,11 @@
 body{
+    margin: 0;
+    padding: 0;
+}
+section{
+    height:100vh;
     background-image: url("../image/html-color-codes-color-tutorials-hero-00e10b1f.jpg");
+    overflow:hidden;
 }
 #loginboard {
     margin: 20vh auto 0 auto;
