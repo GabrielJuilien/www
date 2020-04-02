@@ -21,8 +21,8 @@ if (!isset($_SESSION['user_id'])) {
       <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
       <script type="text/javascript">
         $('section').mousemove(function(e){
-          var moveX = (e.pageX * -1 / 13);
-          var moveY = (e.pageY * -1 / 13);
+          var moveX = (e.pageX * -1 / 50);
+          var moveY = (e.pageY * -1 / 50);
           $(this).css('background-position', moveX + 'px ' + moveY + 'px')
         })
       </script>
