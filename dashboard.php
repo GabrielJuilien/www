@@ -2,6 +2,7 @@
   <head>
     <title>Dashboard</title>
     <link rel="stylesheet" href="style/dashboard.css"/>
+    <link rel="stylesheet" href="style/login.css"/> 
   </head>
   <body>
   <?php
@@ -77,9 +78,12 @@
           }
           else { //If passwords doesn't match
             ?>
-            <div>
-              Unknow credentials. <a href="login.php">Retry.</a>
-            </div>
+            <section>
+              <div id=loginboard>
+                <img src="image/helpdesk_logo.png"/>
+                Unknow credentials. <a href="login.php">Retry.</a>
+              </div>
+            </section>
           </body>
         </html>
             <?php
@@ -89,9 +93,12 @@
         }
         else { //User doesn't exist in the database
           ?>
-          <div>
-            Unknow credentials. <a href="login.php">Retry.</a>
-          </div>
+          <section>
+            <div id=loginboard>
+              <img src="image/helpdesk_logo.png"/>
+              Unknow credentials. <a href="login.php">Retry.</a>
+            </div>
+          </section>
         </body>
       </html>
           <?php
