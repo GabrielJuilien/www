@@ -36,8 +36,8 @@
       var httpRequest = new XMLHttpRequest();
       var url = "getGraphData.php";
 
-      document.getElementById("button").addEventListener('click', makeRequest);
       var button = document.getElementById("button");
+      button.addEventListener('click', makeRequest);
       var list = document.getElementById("operator");
       var graph = document.getElementById("graph");
 
@@ -51,6 +51,7 @@
               return;
               break;
           }
+
           //Get the response containing number of request handled by the operator according to the timestamp and duration
           var response = httpRequest.responseText;
           alert(response);
@@ -58,7 +59,6 @@
       }
 
       function makeRequest() {
-        url + "?operator=" + list.options[list.selectedIndex].value + "&timestamp=" + new Date() + "&step=" + "d";
         httpRequest.onreadystatechange = handler;
         httpRequest.open('GET', url + "?operator=" + list.options[list.selectedIndex].value + "&timestamp=" + new Date() + "&step=" + "d", true);
         httpRequest.send();
