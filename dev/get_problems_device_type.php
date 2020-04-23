@@ -20,8 +20,8 @@ $request = $bdd->prepare('SELECT problems.ID_Problem, problems.Problem_Title
   ');
 $request->bindParam(1, $ID_Device);
 $request->execute();
-echo "<select name=\"problem\">";
-echo "<option id=\"problems_list\" value=\"NULL\"> --- </option>";
+echo "<select name=\"problem\" id=\"problems_select\" onchange=\"getAssociatedSolutions()\">";
+echo "<option value=\"NULL\"> --- </option>";
 
 while ($data = $request->fetch()) {
   echo "<option value=\"".$data['ID_Problem']."\">".$data['Problem_Title']."</option>";
