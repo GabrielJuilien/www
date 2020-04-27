@@ -1,0 +1,42 @@
+body {
+  margin: 0;
+}
+
+#left_menu {
+  display: table;
+  align-items: center;
+  margin: 0;
+  border: 2px solid #888;
+  float:left;
+}
+
+#left_menu .button {
+  background-color: #DDD;
+  border: none;
+  border-color: #888;
+  color: #888;
+  padding: 40px 15px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 32px;
+  min-height: 80px;
+}
+
+#left_menu .button p {
+  display: flex;
+}
+
+#left_menu .button text {
+  margin-right: 50px;
+}
+
+#left_menu .button img {
+  max-width: 35px;
+  vertical-align: middle;
+  margin: auto 2px auto auto;
+}
+
+#left_menu .separator {
+  margin: 0;
+  width: 100%;
+}
