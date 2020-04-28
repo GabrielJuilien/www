@@ -1,5 +1,11 @@
+@font-face {
+    font-family: "Merriweather";
+    src:url("/Fonts/Merriweather-Black.ttf");
+}
+
 body {
   margin: 0;
+  font-family: "Merriweather";
 }
 
 #left_menu {

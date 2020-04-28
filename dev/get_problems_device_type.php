@@ -9,7 +9,7 @@ catch(PDOException $e) {
 $ID_Device = $_GET['ID_Device'];
 
 //Select problems already encountered on similar devices
-$request = $bdd->prepare('SELECT problems.ID_Problem, problems.Problem_Title
+$request = $bdd->prepare('SELECT DISTINCT problems.ID_Problem, problems.Problem_Title
   FROM requests
   LEFT JOIN relations ON relations.ID_Relation = requests.ID_Relation
   LEFT JOIN problems ON problems.ID_Problem = relations.ID_Problem

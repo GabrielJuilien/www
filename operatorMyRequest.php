@@ -1,33 +1,53 @@
 <?php
 session_start();
+if (!isset($_SESSION['user_id'])) {
+  header("Location:/login.php");
+}
 ?>
 <html>
   <head>
     <title>my tickets</title>
   </head>
-  	
-<body>	
-		
-		<?php
-		$bdd=	new PDO("mysql:host=127.0.0.1;dbname=helpdesk",$_SESSION["ID"],$_SESSION["mdp"]);//id et mdp tmp
-		$requete = $bdd->prepare("SELECT * FROM requests WHERE :ID_Operator=IdOp
-		LEFT JOIN employees WHERE		 requests.ID_Submitter = employees.ID_Employee
-		LEFT JOIN jobs WHERE 			 employees.ID_Job = jobs.ID_Job");
-		$requete->execute(array(":id"=>$_SESSION['IdOp']));?>
+  <body>
 
-		 <?php while($resultat=$reponse->fetch()):?>
-			<div class = "conteneurticket">
-				<?php echo "id request " $res["ID_Request"] ?>
-			    <?php echo "Submission_Datetime " $res["Submission_Datetime"] ?>
-	            <?php echo "\n Processing_Datetime " $res["Processing_Datetime"] ?>
-	            <?php if($res["Solve_Datetime"]==NULL){echo "\n Solve_Datetime " $res["Solve_Datetime"]}else{echo "\n active"} ?>
-				<?php echo "\n client name " $res["First_Name"] ?>
-				<?php echo " " $res["Last_Name"] ?>
+  <?php
+  $bdd = new PDO('mysql:dbname=helpdesk;host=localhost', 'helpdesk_default', 'xixn2lCbJe90Xa8n');//id et mdp tmp
+  $requete = $bdd->prepare('SELECT requests.ID_Request, requests.Submission_Datetime, requests.Processing_Datetime, requests.Solve_Datetime, employees.First_Name, employees.Last_Name FROM requests
+                              LEFT JOIN employees ON requests.ID_Submitter = employees.ID_Employee
+                              WHERE requests.ID_Operator = ?
+                            ');
+  $requete->bindParam(1, $_SESSION['id_user']);
+  $data = $requete->execute();
 
-			 <a href="requestDisplay.php?ticket="<?php echo $_GET['ID_Request']?>> see request</a>
-			 </div>			
-		<?php endwhile ;?>
-		
-</body>
+  if ($data != 1) {
+      while($resultat = $data->fetch()) {?>
+          <div class = "conteneurticket">
+            <?php
+            echo "ID Request: ".$res["ID_Request"];
+            echo "Submitted on: ".$res["Submission_Datetime"];
+            echo "\n Request state: ";
+            if (isset($resultat["Solve_Datetime"])) {
+              echo "Solved (".$resultat["Solve_Datetime"].")";
+            }
+            else if (isset($resultat["Processing_Datetime"])){
+              echo "Getting processed (".$resultat["Processing_Datetime"].")";
+            }
+            else {
+              echo "Waiting to be processed.";
+            }
+            echo "\n Submitted by: ".$res["First_Name"]." ".$res["Last_Name"];
+            ?>
 
+            <a href="requestDisplay.php?ticket="<?php echo $_GET['ID_Request']?>> See request</a>
+          </div>
+          <?php
+        }
+  }
+  else {
+    echo "No requests found.";
+  }
+  ?>
+
+
+  </body>
 </html>
