@@ -6,14 +6,16 @@ if (!isset($_SESSION['user_id'])) {
 ?>
 <html>
   <head>
-    <title>my tickets</title>
+    <title>new tickets</title>
   </head>
   <body>
 
   <?php
   $bdd = new PDO('mysql:dbname=helpdesk;host=localhost', 'helpdesk_default', 'xixn2lCbJe90Xa8n');//id et mdp tmp
-  $requete = $bdd->prepare('SELECT requests.ID_Request, requests.Submission_Datetime, requests.Processing_Datetime, requests.Solve_Datetime, employees.First_Name, employees.Last_Name FROM requests
+  $requete = $bdd->prepare('SELECT requests.ID_Request, requests.Submission_Datetime, employees.First_Name, employees.Last_Name, devices_types.devices_types FROM requests
                               LEFT JOIN employees ON requests.ID_Submitter = employees.ID_Employee
+                              LEFT JOIN devices ON       requests.ID_Device = devices.ID_Device                      
+                              LEFT JOIN devices_types ON   devices.ID_Device_Type = devices_types.ID_Device_Type 
                               WHERE requests.ID_Operator = ?
                             ');
   $requete->bindParam(1, $_SESSION['id_user']);
@@ -25,17 +27,13 @@ if (!isset($_SESSION['user_id'])) {
             <?php
             echo "ID Request: ".$res["ID_Request"];
             echo "Submitted on: ".$res["Submission_Datetime"];
-            echo "\n Request state: ";
-            if (isset($resultat["Solve_Datetime"])) {
-              echo "Solved (".$resultat["Solve_Datetime"].")";
-            }
-            else if (isset($resultat["Processing_Datetime"])){
-              echo "Getting processed since: (".$resultat["Processing_Datetime"].")";
-            }
+            echo "device types :".$res["devices_types"]
+            echo "Waiting to be processed.";
+            
             echo "\n Submitted by: ".$res["First_Name"]." ".$res["Last_Name"];
             ?>
 
-            <a href="requestDisplay.php?ticket="<?php echo $_GET['ID_Request']?>> See request</a>
+            <a> ici le SUPER BOUTON AJAX </a>
           </div>
           <?php
         }
