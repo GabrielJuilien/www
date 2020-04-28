@@ -30,7 +30,7 @@ if (!isset($_SESSION['user_id'])) {
               echo "Solved (".$resultat["Solve_Datetime"].")";
             }
             else if (isset($resultat["Processing_Datetime"])){
-              echo "Getting processed (".$resultat["Processing_Datetime"].")";
+              echo "Getting processed since: (".$resultat["Processing_Datetime"].")";
             }
             else {
               echo "Waiting to be processed.";
