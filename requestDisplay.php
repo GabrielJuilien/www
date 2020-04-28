@@ -8,9 +8,7 @@ session_start();
   </head>
   	
 <body>	
-		<div class="titreMagasin">
-			INFOS ARTICLE
-		</div>
+		
 		<?php
 		$bdd=	new PDO("mysql:host=127.0.0.1;dbname=helpdesk",$_SESSION["ID"],$_SESSION["mdp"]);//id et mdp tmp
 		$requete = $bdd->prepare("SELECT * FROM requests WHERE :ID_Request=id 
@@ -39,7 +37,6 @@ session_start();
 			<?php echo $res["Department_Name"] ?>
 			<?php echo $res["Job_Name"] ?>
         </div>
-		"test_get.php?subject=PHP&web=W3schools.com"
 		 <a href="editingRequest.php?ticket="<?php echo $_GET['ID_Request']?>>edit ticket</a>	
 </body>
 
