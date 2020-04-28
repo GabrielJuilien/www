@@ -16,9 +16,8 @@ if (!isset($_SESSION['user_id'])) {
                               LEFT JOIN employees ON requests.ID_Submitter = employees.ID_Employee
                               LEFT JOIN devices ON       requests.ID_Device = devices.ID_Device                      
                               LEFT JOIN devices_types ON   devices.ID_Device_Type = devices_types.ID_Device_Type 
-                              WHERE requests.ID_Operator = ?
+                              WHERE requests.Processing_Datetime IS NULL;
                             ');
-  $requete->bindParam(1, $_SESSION['id_user']);
   $data = $requete->execute();
 
   if ($data != 1) {
