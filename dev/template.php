@@ -153,11 +153,11 @@ function handler3() {
 
     //TODO
     var response = httpSetRequest.responseText;
-    if (response == "Success") {
-
+    if (response == "Error") {
+      page_content.innerHTML = "There was an error creating your request. If the problem persists, please contact the helpdesk by phone.";
     }
     else {
-
+      page_content.innerHTML = "Your request was successfully created with number: " + response + ". You can access it using the \"My requests\" panel.";
     }
   }
 }
