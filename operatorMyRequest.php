@@ -37,17 +37,14 @@ if (!isset($_SESSION['user_id'])) {
         echo "\n Submitted by: ".$resultat["First_Name"]." ".$resultat["Last_Name"];
         ?>
 
-<<<<<<< Updated upstream
-        <a href="requestDisplay.php?ticket="<?php echo $_GET['ID_Request']?>> See request</a>
+
+        <a href="requestDisplay.php?ticket=<?php echo $resultat['ID_Request']?>"> See request</a>
+        <a href="requestDisplay.php?ticket=<?php echo $resultat['ID_Request']?>"> transfert request</a>
       </div>
       <?php
       while ($resultat = $requete->fetch()) {?>
         <div class = "conteneurticket">
-=======
-            <a href="requestDisplay.php?ticket="<?php echo $_GET['ID_Request']?>> See request</a>
-            <a href="operatorRequestTransfert.php?ticket="<?php echo $_GET['ID_Request']?>> See request</a>
-          </div>
->>>>>>> Stashed changes
+
           <?php
           echo "ID Request: ".$resultat["ID_Request"];
           echo "Submitted on: ".$resultat["Submission_Datetime"];
@@ -64,7 +61,10 @@ if (!isset($_SESSION['user_id'])) {
           echo "\n Submitted by: ".$resultat["First_Name"]." ".$resultat["Last_Name"];
           ?>
 
-          <a href="requestDisplay.php?ticket="<?php echo $_GET['ID_Request']?>> See request</a>
+          <a href="requestDisplay.php?ticket=<?php echo $resultat['ID_Request']?>"> See request</a>
+          <a href="requestDisplay.php?ticket=<?php echo $resultat['ID_Request']?>"> transfert request</a>
+
+
         </div>
         <?php
       }

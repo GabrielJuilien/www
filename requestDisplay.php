@@ -42,7 +42,8 @@ if (!isset($_SESSION['user_id'])) {
 			<?php echo $res["Department_Name"] ?>
 			<?php echo $res["Job_Name"] ?>
         </div>
-		 <a href="editingRequest.php?ticket="<?php echo $_GET['ID_Request']?>>edit ticket</a>
+		 <a href="editingRequest.php?ticket=<?php echo $_GET['ticket']?>">edit ticket</a>
+
 </body>
 
 </html>
