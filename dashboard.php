@@ -2,7 +2,7 @@
   <head>
     <title>Dashboard</title>
     <link rel="stylesheet" href="style/dashboard.css"/>
-    <link rel="stylesheet" href="style/login.css"/> 
+    <link rel="stylesheet" href="style/login.css"/>
   </head>
   <body>
   <?php
@@ -178,8 +178,7 @@
         }
         else if ($_SESSION['user_role'] == Roles::Operator)
         {
-          include "operator-right.php";
-
+            include "operator-right.php";
         }
         else if ($_SESSION['user_role'] == Roles::Specialist)
         {

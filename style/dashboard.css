@@ -36,10 +36,10 @@ body
 }
 .mainframe-right
 {
-  margin-left: 3vw;  padding: 2vw 1vw 2vw 1vw;
+  margin: auto 0vw auto 3vw;  padding: 2vw 1vw 2vw 1vw;
   width: 40vw;
   border: 2px solid;
-  height: 80vh;
+  height: 30vh;
 
   background-color: rgb(231,238,243);
 

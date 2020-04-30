@@ -4,15 +4,17 @@
     <title>Dashboard</title>
   </head>
   <body>
+
     <div id="left_menu">
-      <div class="button">
+      <hr class="separator"/>
+      <div class="button" id="show_my_request">
         <p>
           <text>My requests</text>
           <img class="right_arrow" src="right-arrow.png"/>
         </p>
       </div>
       <hr class="separator"/>
-      <div class="button" id="create_request_button">
+      <div class="button" id="create_request_button" onclick="activateButton(this)">
         <p>
           <text>Create a request</text>
           <img class="right_arrow" src="right-arrow.png"/>
@@ -25,6 +27,7 @@
           <img class="right_arrow" src="right-arrow.png"/>
         </p>
       </div>
+      <hr class="separator"/>
     </div>
     <div id="content">
     </div>
@@ -215,4 +218,29 @@ function setRequest() {
     httpSetRequest.send(param);
   }
 }
+
+function activateButton(btn){
+
+}
+
+document.getElementById("left_menu").addEventListener('click', function(event) {
+
+  if(event.target && event.target.className === "button") {
+    event.target.style.borderRightColor = "rgb(0,0,0,0)";
+  }
+  var parent_child_node_tab = event.target.parentNode.childNodes;
+  var last = parent_child_node_tab.length - 1;
+  var i = 0;
+  while(i < last) {
+    if(parent_child_node_tab[i].className == "button") {
+      if(parent_child_node_tab[i].id !== event.target.id) {
+        parent_child_node_tab[i].style.borderRightColor = "#888";
+      }
+    }
+    i++;
+  }
+
+});
+
+
 </script>
