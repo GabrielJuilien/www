@@ -111,7 +111,7 @@ else {
   <div id="Header"> IT Helpdesk
   </div>
   <div id ="base">
-    <input type="checkbox" id="openMenu" />
+    <input type="checkbox" id="openMenu" checked="checked"/>
       <div id="menuToggle">
         <label for="openMenu">
           <img src="/image/Hamburger_icon.png" id="Hamburger_icon"/>
@@ -159,7 +159,7 @@ else {
               </p>
             </div>
             <hr class="separator"/>
-            <div class="button" id="display_pending_request">
+            <div class="button" id="pending_requests">
               <p>
                 <text>Pending requests</text>
                 <img class="right_arrow" src="image/right-arrow.png"/>

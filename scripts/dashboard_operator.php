@@ -6,7 +6,7 @@ if (!$_SESSION['user_id']) {
   exit();
 }
 
-if ($_SESSION['user_role'] !== 0) {
+if ($_SESSION['user_role'] !== 1) {
   echo "You don't have permission to access this page.";
   exit();
 }
@@ -35,12 +35,14 @@ var page_content = document.getElementById("content");
 
 //Buttons requests
 var httpCreateRequestPage = new XMLHttpRequest();
-var httpViewUserRequests = new XMLHttpRequest();
+var httpDisplayRequests = new XMLHttpRequest();
+var httpPendingRequests = new XMLHttpRequest();
 var httpUserProfile = new XMLHttpRequest();
 
-var urlCreateRequestPage = "/default/create_request.php";
-var urlViewUserRequests = "/default/display_requests.php";
-var urlUserProfile = "/default/profile.php";
+var urlCreateRequestPage = "/operator/create_request.php";
+var urlDisplayRequests = "/operator/display_requests.php";
+var urlPendingRequests = "/operator/pending_requests.php";
+var httpUserProfile = "/operator/profile.php";
 
 //Buttons listeners
 var buttonCreateRequest = document.getElementById("create_request");
@@ -51,11 +53,19 @@ buttonCreateRequest.addEventListener('click', function() {
   page_content.innerHTML = "";
 });
 
-var buttonViewUserRequests = document.getElementById("display_requests");
-buttonViewUserRequests.addEventListener('click', function() {
-  httpViewUserRequests.onreadystatechange = handlerViewUserRequests;
-  httpViewUserRequests.open('GET', urlViewUserRequests);
-  httpViewUserRequests.send();
+var buttonDisplayRequests = document.getElementById("display_requests");
+buttonDisplayRequests.addEventListener('click', function() {
+  httpDisplayRequests.onreadystatechange = handlerDisplayRequests;
+  httpDisplayRequests.open('GET', urlDisplayRequests);
+  httpDisplayRequests.send();
+  page_content.innerHTML = "";
+});
+
+var buttonPendingRequests = document.getElementById("pending_requests");
+buttonPendingRequests.addEventListener('click', function() {
+  httpPendingRequests.onreadystatechange = handlerPendingRequests;
+  httpPendingRequests.open('GET', urlPendingRequests);
+  httpPendingRequests.send();
   page_content.innerHTML = "";
 });
 
@@ -67,7 +77,8 @@ buttonUserProfile.addEventListener('click', function() {
   page_content.innerHTML = "";
 });
 
-//Button handlers
+
+//Buttons handlers
 function handlerCreateRequestPage() {
   if (httpCreateRequestPage.readyState === XMLHttpRequest.DONE) {
     switch(httpCreateRequestPage.status) {
@@ -82,16 +93,29 @@ function handlerCreateRequestPage() {
   }
 }
 
-function handlerViewUserRequests() {
-  if (httpViewUserRequests.readyState === XMLHttpRequest.DONE) {
-    switch (httpViewUserRequests.status) {
+function handlerDisplayRequests() {
+  if (httpDisplayRequests.readyState === XMLHttpRequest.DONE) {
+    switch(httpDisplayRequests.status) {
       case 200:
-        break;
+      break;
       default:
-        return;
-        break;
+      return;
+      break;
     }
-    page_content.innerHTML = httpViewUserRequests.responseText;
+    page_content.innerHTML = httpDisplayRequests.responseText;
+  }
+}
+
+function handlerPendingRequests() {
+  if (httpPendingRequests.readyState === XMLHttpRequest.DONE) {
+    switch(httpPendingRequests.status) {
+      case 200:
+      break;
+      default:
+      return;
+      break;
+    }
+    page_content.innerHTML = httpPendingRequests.responseText;
   }
 }
 
@@ -110,29 +134,8 @@ function handlerUserProfile() {
 }
 
 //Create request
-var httpGetProblems = new XMLHttpRequest();
-var httpGetSolutions = new XMLHttpRequest();
-var httpPostRequest = new XMLHttpRequest();
-
-var urlGetProblems = "/default/get_problems_device_type.php";
-var urlGetSolutions = "/default/get_solutions_from_problem.php";
-var urlPostRequest = "/default/set_request.php";
-
-var devices_div;
-var devices_select;
-
-var problems_div;
-var problems_select;
-
-var problem_form;
-var user_problem_title;
-var user_problem_description;
-
-var problem_form_button;
-var problem_form_error;
-
 function getRequestFormVariables() {
-  devices_div = document.getElementById("devices_div");
+  devices_div = document.getElementById("devices_div")
   devices_select = document.getElementById("devices_select");
 
   problems_div = document.getElementById("problems_div");
@@ -240,7 +243,7 @@ function callbackPostRequest() {
 //Display request
 var httpDisplayRequest = new XMLHttpRequest();
 
-var urlDisplayRequest = "/default/display_request.php"
+var urlDisplayRequest = "/operator/display_request.php"
 
 function handlerDisplayRequest() {
   if (httpDisplayRequest.readyState === XMLHttpRequest.DONE) {

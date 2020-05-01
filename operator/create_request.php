@@ -21,6 +21,17 @@ catch(PDOException $e) {
 <body>
   <form action="create_request.php" method="post">
     <input type="hidden" name="action" value="create"/>
+    Please select the user you are posting the request for:<br />
+    <select id="user_select" name="user">
+      <?php
+      $request = $bdd->query('SELECT ID_Employee, First_Name, Last_Name FROM employees');
+      while ($user = $request->fetch()) {
+        ?>
+        <option value="<?php echo $user['ID_Employee'] ?>"><?php echo $user['ID_Employee']." - ".$user['First_Name']." ".$user['Last_Name']; ?>
+        <?php
+      }
+      ?>
+    </select><br/>
     Please select the device you are having troubles with:<br />
     <div id="device_div">
       <select id="devices_select" name="device" onchange="getAssociatedProblems()">

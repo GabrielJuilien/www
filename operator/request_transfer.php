@@ -29,7 +29,7 @@ if ($_SESSION['user_role'] !== 1) {
 				    <?php echo "specialist name : ".$resultat["First_Name"].$resultat[Last_Name]?>
 				    <?php echo "speciality : ".$resultat["Speciality_Name"] ?>
 
-				    <a href="createTask.php?ticket=<?php echo $_GET['ticket']?>&specialist=<?php echo $resultat['ID_Specialist'] ?>"> create task</a>
+				    <a href="transfer_request.php?ticket=<?php echo $_POST['ticket']?>&specialist=<?php echo $resultat['ID_Specialist'] ?>"> create task</a>
 		        </div>
 
 		<?php } ?>
