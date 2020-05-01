@@ -11,7 +11,7 @@ if (!isset($_SESSION['user_id'])) {
       <section>
         <div id=loginboard>
           <img src="image/helpdesk_logo.png"/>
-          <form action="dashboard.php" method="post">
+          <form action="template.php" method="post">
             <input type="text" name="user_login" placeholder="Login"/><br />
             <input type="password" name="user_password" placeholder="Password"/><br />
             <input type="submit" Value="Submit">
@@ -40,7 +40,7 @@ else {
     <body>
       <div id=loginboard>
         <img src="image/helpdesk_logo.png"/>
-        You are logged in. Access your <a href="dashboard.php">dashboard</a> or <a href="disconnect.php">disconnect.</a>
+        You are logged in. Access your <a href="template.php">dashboard</a> or <a href="disconnect.php">disconnect.</a>
       </div>
     </body>
   </html>

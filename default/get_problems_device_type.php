@@ -31,7 +31,7 @@ $request = $bdd->prepare('SELECT DISTINCT problems.ID_Problem, problems.Problem_
   ');
 $request->bindParam(1, $ID_Device);
 $request->execute();
-echo "<select name=\"problem\" id=\"problems_select\" onchange=\"getAssociatedSolutions()\">";
+echo "<select name=\"problem\" id=\"problems_select\" onchange=\"callbackGetSolutions()\">";
 echo "<option value=\"NULL\"> --- </option>";
 
 while ($data = $request->fetch()) {

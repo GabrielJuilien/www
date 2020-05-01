@@ -19,10 +19,10 @@ catch(PDOException $e) {
 
 $ID_Device = $_POST['ID_Device'];
 $ID_User = $_POST['ID_User'];
-$problem_title = $_POST['problem_title'];
-$problem_description = $_POST['problem_description'];
 
 if (empty($_POST['ID_Problem'])) {
+  $problem_title = $_POST['problem_title'];
+  $problem_description = $_POST['problem_description'];
   $req1 = $bdd->prepare('INSERT INTO problems (problem_title, problem_description) VALUES (?, ?)');
   $req1->bindParam(1, $problem_title);
   $req1->bindParam(2, $problem_description);
