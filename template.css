@@ -7,17 +7,17 @@ body {
   margin: 0;
   font-family: "Merriweather";
 }
-
-/*#left_menu {
-  display: table;
-  align-items: center;
-  margin: 0;
-  float:left;
-
-}*/
-#content {
-
+#Header {
+  background-color: rgb(0,150,200);
+  color: rgb(240,240,240);
+  text-align: center;
 }
+#base {
+  display: flex;
+}
+
+
+
 #left_menu .button {
   background-color: #DDD;
   cursor: pointer;
@@ -92,8 +92,8 @@ body {
 {
   display: block;
   position: relative;
-  top: 50px;
-  left: 50px;
+  top: 0px;
+  left: 0px;
 
   z-index: 1;
 
@@ -113,7 +113,7 @@ body {
 {
   position: relative;
   width: 300px;
-  margin: -100px 0 0 -50px;
+  margin: 0 0 0 0px;
 
   background: #ededed;
   list-style-type: none;
@@ -128,35 +128,20 @@ body {
 /*
  * And let's slide it in from the left
  */
-#menuToggle input:checked ~ #left_menu
+#openMenu:checked + #menuToggle #left_menu
 {
   transform: none;
 }
 
 
-#menuToggle input
+#openMenu
 {
-  width: 40px;
-  height: 40px;
-  position: absolute;
-  top: 50px;
-  left:-50px;
-  margin: 0;
-  cursor: pointer;
+  position: fixed;
+  top: -100px;
+  left: -100px;
 
-  opacity: 0; /* hide this */
-  z-index: 3; /* and place it over the hamburger */
-
-  -webkit-touch-callout: none;
-
-  transform-origin: 0% 0%;
-  transform: translate(0, 0);
-
-  transition: transform 0.5s cubic-bezier(0.77,0.2,0.05,1.0);
-}
-
-#menuToggle input:checked {
-  transform: translate(250px, 0);
+  opacity: 0;
+  z-index: -1;
 }
 
 #menuToggle #Hamburger_icon {
@@ -165,8 +150,8 @@ body {
   width: 40px;
   height: 40px;
 
-  top: 50px;
-  left:-50px;
+  top: 0px;
+  left:0px;
   background-size: cover;
   z-index: 2;
 
@@ -176,7 +161,24 @@ body {
   transition: transform 0.5s cubic-bezier(0.77,0.2,0.05,1.0);
 }
 
-#menuToggle input:checked ~ #Hamburger_icon
+#openMenu:checked + #menuToggle #Hamburger_icon
+{
+  transform: translate(250px, 0);
+}
+
+#content {
+  position: relative;
+  margin: 10px 40px 0px 30px;
+  top: 0;
+  left: -200px;
+
+  transform-origin: 0% 0%;
+  transform: translate(0, 0);
+
+  transition: transform 0.5s cubic-bezier(0.77,0.2,0.05,1.0);
+}
+
+#openMenu:checked ~ #content
 {
   transform: translate(250px, 0);
 }

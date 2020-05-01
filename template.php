@@ -108,121 +108,126 @@ else {
   <title>Dashboard</title>
 </head>
 <body>
-  <div id="menuToggle">
-
-    <input type="checkbox" />
-    <img src="/image/Hamburger_icon.png" id="Hamburger_icon"/>
-    <div id="left_menu">
-      <hr class="separator"/>
-      <?php
-      if ($_SESSION['user_role'] === 0) {
-        ?>
-        <div class="button" id="create_request">
-          <p>
-            <text>Create a request</text>
-            <img class="right_arrow" src="image/right-arrow.png"/>
-          </p>
-        </div>
-        <hr class="separator"/>
-        <div class="button" id="display_requests">
-          <p>
-            <text>My requests</text>
-            <img class="right_arrow" src="image/right-arrow.png"/>
-          </p>
-        </div>
-        <hr class="separator"/>
-        <div class="button" id="display_profile">
-          <p>
-            <text>My profile</text>
-            <img class="right_arrow" src="image/right-arrow.png"/>
-          </p>
-        </div>
-        <?php
-      }
-      else if ($_SESSION['user_role'] === 1) {
-        ?>
-        <div class="button" id="create_request">
-          <p>
-            <text>Create a request</text>
-            <img class="right_arrow" src="image/right-arrow.png"/>
-          </p>
-        </div>
-        <hr class="separator"/>
-        <div class="button" id="display_requests">
-          <p>
-            <text>Current requests</text>
-            <img class="right_arrow" src="image/right-arrow.png"/>
-          </p>
-        </div>
-        <hr class="separator"/>
-        <div class="button" id="display_pending_request">
-          <p>
-            <text>Pending requests</text>
-            <img class="right_arrow" src="image/right-arrow.png"/>
-          </p>
-        </div>
-        <hr class="separator"/>
-        <div class="button" id="display_profile">
-          <p>
-            <text>My profile</text>
-            <img class="right_arrow" src="image/right-arrow.png"/>
-          </p>
-        </div>
-        <?php
-      }
-      else if ($_SESSION['user_role'] === 2) {
-        ?>
-        <div class="button" id="display_tasks">
-          <p>
-            <text>Current tasks</text>
-            <img class="right_arrow" src="image/right-arrow.png"/>
-          </p>
-        </div>
-        <hr class="separator"/>
-        <div class="button" id="display_profile">
-          <p>
-            <text>My profile</text>
-            <img class="right_arrow" src="image/right-arrow.png"/>
-          </p>
-        </div>
-        <?php
-      }
-      else if ($_SESSION['user_role'] === 3) {
-        ?>
-        <div class="button" id="display_performances">
-          <p>
-            <text>Current requests</text>
-            <img class="right_arrow" src="image/right-arrow.png"/>
-          </p>
-        </div>
-        <hr class="separator"/>
-        <div class="button" id="display_pending_request">
-          <p>
-            <text>Pending requests</text>
-            <img class="right_arrow" src="image/right-arrow.png"/>
-          </p>
-        </div>
-        <hr class="separator"/>
-        <div class="button" id="display_profile">
-          <p>
-            <text>My profile</text>
-            <img class="right_arrow" src="image/right-arrow.png"/>
-          </p>
-        </div>
-        <?php
-      }
-      ?>
-      <hr class="separator"/>
-      <div class="button" id="disconnect" onclick='window.location.replace("/disconnect.php")'>
-        <p>
-          <text>Disconnect</text>
-          <img class="right_arrow" src="image/right-arrow.png"/>
-        </p>
-      </div>
-      <hr class="separator"/>
-    </div>
+  <div id="Header"> IT Helpdesk
   </div>
-  <div id="content">
+  <div id ="base">
+    <input type="checkbox" id="openMenu" />
+      <div id="menuToggle">
+        <label for="openMenu">
+          <img src="/image/Hamburger_icon.png" id="Hamburger_icon"/>
+        </label>
+        <div id="left_menu">
+          <hr class="separator"/>
+          <?php
+          if ($_SESSION['user_role'] === 0) {
+            ?>
+            <div class="button" id="create_request">
+              <p>
+                <text>Create a request</text>
+                <img class="right_arrow" src="image/right-arrow.png"/>
+              </p>
+            </div>
+            <hr class="separator"/>
+            <div class="button" id="display_requests">
+              <p>
+                <text>My requests</text>
+                <img class="right_arrow" src="image/right-arrow.png"/>
+              </p>
+            </div>
+            <hr class="separator"/>
+            <div class="button" id="display_profile">
+              <p>
+                <text>My profile</text>
+                <img class="right_arrow" src="image/right-arrow.png"/>
+              </p>
+            </div>
+            <?php
+          }
+          else if ($_SESSION['user_role'] === 1) {
+            ?>
+            <div class="button" id="create_request">
+              <p>
+                <text>Create a request</text>
+                <img class="right_arrow" src="image/right-arrow.png"/>
+              </p>
+            </div>
+            <hr class="separator"/>
+            <div class="button" id="display_requests">
+              <p>
+                <text>Current requests</text>
+                <img class="right_arrow" src="image/right-arrow.png"/>
+              </p>
+            </div>
+            <hr class="separator"/>
+            <div class="button" id="display_pending_request">
+              <p>
+                <text>Pending requests</text>
+                <img class="right_arrow" src="image/right-arrow.png"/>
+              </p>
+            </div>
+            <hr class="separator"/>
+            <div class="button" id="display_profile">
+              <p>
+                <text>My profile</text>
+                <img class="right_arrow" src="image/right-arrow.png"/>
+              </p>
+            </div>
+            <?php
+          }
+          else if ($_SESSION['user_role'] === 2) {
+            ?>
+            <div class="button" id="display_tasks">
+              <p>
+                <text>Current tasks</text>
+                <img class="right_arrow" src="image/right-arrow.png"/>
+              </p>
+            </div>
+            <hr class="separator"/>
+            <div class="button" id="display_profile">
+              <p>
+                <text>My profile</text>
+                <img class="right_arrow" src="image/right-arrow.png"/>
+              </p>
+            </div>
+            <?php
+          }
+          else if ($_SESSION['user_role'] === 3) {
+            ?>
+            <div class="button" id="display_performances">
+              <p>
+                <text>Current requests</text>
+                <img class="right_arrow" src="image/right-arrow.png"/>
+              </p>
+            </div>
+            <hr class="separator"/>
+            <div class="button" id="display_pending_request">
+              <p>
+                <text>Pending requests</text>
+                <img class="right_arrow" src="image/right-arrow.png"/>
+              </p>
+            </div>
+            <hr class="separator"/>
+            <div class="button" id="display_profile">
+              <p>
+                <text>My profile</text>
+                <img class="right_arrow" src="image/right-arrow.png"/>
+              </p>
+            </div>
+            <?php
+          }
+          ?>
+          <hr class="separator"/>
+          <div class="button" id="disconnect" onclick='window.location.replace("/disconnect.php")'>
+            <p>
+              <text>Disconnect</text>
+              <img class="right_arrow" src="image/right-arrow.png"/>
+            </p>
+          </div>
+          <hr class="separator"/>
+        </div>
+      </div>
+      <div id="content">
+      </div>
   </div>
 
 </body>
