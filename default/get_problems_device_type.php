@@ -1,4 +1,15 @@
 <?php
+session_start();
+
+if (!$_SESSION['user_id']) {
+  header("Location:/login.php");
+}
+
+if ($_SESSION['user_role'] !== 0) {
+  echo "You don't have permission to access this page.";
+  exit();
+}
+
 try {
   $bdd = new PDO('mysql:dbname=helpdesk;host=localhost', 'helpdesk_default', 'xixn2lCbJe90Xa8n');
 }

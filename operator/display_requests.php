@@ -1,12 +1,18 @@
 <?php
 session_start();
-if (!isset($_SESSION['user_id'])) {
-  header("Location:login.php");
+
+if (!$_SESSION['user_id']) {
+  header("Location:/login.php");
+}
+
+if ($_SESSION['user_role'] !== 1) {
+  echo "You don't have permission to access this page.";
+  exit();
 }
 ?>
 <html>
 <head>
-  <title>my tickets</title>
+  <title>My tickets</title>
 </head>
 <body>
   <?php
@@ -39,7 +45,7 @@ if (!isset($_SESSION['user_id'])) {
 
 
         <a href="requestDisplay.php?ticket=<?php echo $resultat['ID_Request']?>"> See request</a>
-        <a href="requestDisplay.php?ticket=<?php echo $resultat['ID_Request']?>"> transfert request</a>
+        <a href="requestDisplay.php?ticket=<?php echo $resultat['ID_Request']?>"> Transfert request</a>
       </div>
       <?php
       while ($resultat = $requete->fetch()) {?>
