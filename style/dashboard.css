@@ -19,6 +19,7 @@ body
   height: 80vh;
 
   background-color: rgb(231,238,243);
+  border-color : orange;
 
   overflow: auto;
 }
@@ -30,6 +31,7 @@ body
   height: 80vh;
 
   background-color: rgb(231,238,243);
+  border-color : orange;
 
   overflow: auto;
 
@@ -42,6 +44,7 @@ body
   height: 80vh;
 
   background-color: rgb(231,238,243);
+  border-color : orange;
 
   overflow: auto;
 }

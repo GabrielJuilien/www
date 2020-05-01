@@ -1,0 +1,29 @@
+#profileboard {
+    width=80%;
+    background-color: lightgrey;
+    border: 5px solid;
+    border-color: orange;
+    box-shadow: 3px 6px grey;
+    text-align: center;
+    font-family: "Comic Sans MS", "Comic Sans", cursive;
+}
+
+#profileboard input[type=password]{
+    border: 2px solid;
+    width: 90%;
+    height: 40px;
+    margin: 10px auto 10px 5%;
+}
+
+#profileboard input[type=password]:focus {
+    outline: none;
+    border-color: orange;
+}
+
+#profileboard input[type=submit] {
+    width:20%;
+    height:5vh;
+    background-color: orange;
+    cursor: pointer;
+    margin-bottom: 5vh;
+}

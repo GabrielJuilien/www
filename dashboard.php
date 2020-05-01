@@ -96,7 +96,7 @@
           <section>
             <div id=loginboard>
               <img src="image/helpdesk_logo.png"/>
-              Unknow credentials. <a href="login.php">Retry.</a>
+              Unknown credentials. <a href="login.php">Retry.</a>
             </div>
           </section>
         </body>
@@ -110,6 +110,7 @@
   if (isset($_SESSION['user_id']))
   {
     ?>
+     <p>You're logged in. You can access to your profile <a href="myprofile.php">here.</a>
     <div class="mainframe">
       <div class="mainframe-left">
         <?php
