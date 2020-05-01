@@ -44,12 +44,6 @@ session_start();
             <input type="submit" value="submit">
         </form>
 
-
-
-
-
-
-
 		<div class = "conteneurticket">
 		    <?php echo $res["Submission_Datetime"] ?>
             <?php echo $res["Processing_Datetime"] ?>

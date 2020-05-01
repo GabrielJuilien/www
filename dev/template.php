@@ -1,6 +1,6 @@
 <html>
   <head>
-    <link rel="stylesheet" href="template.css"/>
+    <link rel="stylesheet" href="/template.css"/>
     <title>Dashboard</title>
   </head>
   <body>
