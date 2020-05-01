@@ -1,11 +1,13 @@
-///Buttons animation
+
 document.getElementById("left_menu").addEventListener('click', function(event) {
   if(event.target && event.target.className === "button") {
     event.target.style.borderRightColor = "rgb(0,0,0,0)";
   }
+  ///Buttons animation
   var parent_child_node_tab = event.target.parentNode.childNodes;
   var last = parent_child_node_tab.length - 1;
   var i = 0;
+
   while(i < last) {
     if(parent_child_node_tab[i].className == "button") {
       if(parent_child_node_tab[i].id !== event.target.id) {
@@ -15,10 +17,6 @@ document.getElementById("left_menu").addEventListener('click', function(event) {
     i++;
   }
 });
-
-function activateButton(btn){
-
-}
 
 //Main frame
 var page_content = document.getElementById("content");
