@@ -5,24 +5,10 @@
   </head>
   <body>
       <div id="menuToggle">
-        <!--
-        A fake / hidden checkbox is used as click reciever,
-        so you can use the :checked selector on it.
-        -->
+
         <input type="checkbox" />
         <img src="/image/Hamburger_icon.png" id="Hamburger_icon"/>
 
-        <!--
-        Some spans to act as a hamburger.
-
-        They are acting like a real hamburger,
-        not that McDonalds stuff.
-        -->
-
-        <!--
-        Too bad the menu has to be inside of the button
-        but hey, it's pure CSS magic.
-        -->
         <div id="left_menu">
           <hr class="separator"/>
 
