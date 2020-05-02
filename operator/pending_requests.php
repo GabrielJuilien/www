@@ -37,7 +37,7 @@ if ($_SESSION['user_role'] !== 1) {
 
           echo "\n Submitted by: ".$resultat["First_Name"]." ".$resultat["Last_Name"];
           ?>
-          <a> ici le SUPER BOUTON AJAX </a>
+          <button class="take_request" onclick="callbackAcceptRequest(<?php echo $resultat['ID_Request']; ?>)">Accept request</button>
         </div>
         <?php
       }
@@ -57,13 +57,15 @@ if ($_SESSION['user_role'] !== 1) {
         echo "\n Submitted by: ".$resultat["First_Name"]." ".$resultat["Last_Name"];
         ?>
 
-        <a> ici le SUPER BOUTON AJAX </a>
+        <button class="take_request" onclick="callbackAcceptRequest(<?php echo $resultat['ID_Request']; ?>)">Accept request</button>
       </div>
       <?php
     }
   }
   else {
-    echo "No request found.";
+    ?>
+    No request found.
+    <?php
   }
   ?>
 </body>

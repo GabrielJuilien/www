@@ -243,11 +243,11 @@ function callbackPostRequest() {
 //Display request
 var httpDisplayRequest = new XMLHttpRequest();
 
-var urlDisplayRequest = "/operator/display_request.php"
+var urlDisplayRequest = "/operator/display_request.php";
 
 function handlerDisplayRequest() {
   if (httpDisplayRequest.readyState === XMLHttpRequest.DONE) {
-    page_content.innerHTML = "" + httpDisplayRequest.responseText;
+    page_content.innerHTML = httpDisplayRequest.responseText;
   }
 }
 
@@ -256,5 +256,63 @@ function callbackDisplayRequest(ID_Request) {
     httpDisplayRequest.onreadystatechange = handlerDisplayRequest;
     httpDisplayRequest.open('GET', urlDisplayRequest + "?ID_Request=" + ID_Request);
     httpDisplayRequest.send();
+  }
+}
+
+//Transfer request
+var httpTransferRequest = new XMLHttpRequest();
+
+var urlTransferRequest = "/operator/transfer_request.php";
+
+function handlerTransferRequest() {
+  if (httpTransferRequest.readyState === XMLHttpRequest.DONE) {
+    page_content.innerHTML = httpTransferRequest.responseText;
+  }
+}
+
+function callbackTransferRequest(ID_Request) {
+  if (typeof(ID_Request) == "number") {
+    httpTransferRequest.onreadystatechange = handlerTransferRequest;
+    httpTransferRequest.open('GET', urlTransferRequest + "?ID_Request=" + ID_Request);
+    httpTransferRequest.send();
+  }
+}
+
+//Request transfer
+var httpRequestTransfer = new XMLHttpRequest();
+
+var urlRequestTransfer = "/operator/request_transfer.php";
+
+function handlerRequestTransfer() {
+  if (httpTransferRequest.readyState === XMLHttpRequest.DONE) {
+    page_content.innerHTML = httpTransferRequest.responseText;
+  }
+}
+
+function callbackRequestTransfer(ID_Request, ID_Specialist) {
+  var specialist_select = document.getElementById("specialist_select");
+  if (typeof(ID_Request) == "number" && typeof(ID_Specialist) == "number") {
+    httpTransferRequest.onreadystatechange = handlerRequestTransfer;
+    httpTransferRequest.open('GET', urlRequestTransfer + "?ID_Request=" + ID_Request + "&ID_Specialist=" + ID_Specialist);
+    httpTransferRequest.send();
+  }
+}
+
+//Accept request
+var httpAcceptRequest = new XMLHttpRequest();
+
+var urlAcceptRequest = "/operator/accept_request.php";
+
+function handlerAcceptRequest() {
+  if (httpAcceptRequest.readyState === XMLHttpRequest.DONE) {
+    page_content.innerHTML = httpAcceptRequest.responseText;
+  }
+}
+
+function callbackAcceptRequest(ID_Request) {
+  if (typeof(ID_Request) == "number") {
+    httpAcceptRequest.onreadystatechange = handlerAcceptRequest;
+    httpAcceptRequest.open('GET', urlAcceptRequest + "?ID_Request=" + ID_Request);
+    httpAcceptRequest.send();
   }
 }

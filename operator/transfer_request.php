@@ -6,55 +6,37 @@ if (!$_SESSION['user_id']) {
 }
 
 if ($_SESSION['user_role'] !== 1) {
-  echo "You don't have permission to access this page";
+  echo "You don't have permission to access this page.";
   exit();
 }
 
-try {
-  $bdd = new PDO('mysql:dbname=helpdesk;host=localhost', 'helpdesk_default', 'xixn2lCbJe90Xa8n');
-}
-catch(PDOException $e) {
-  $e->getMessage();
-}
-
-if (isset($_POST['ID_Request']) && isset($_POST['ID_Specialist']))
-{
-  $ID_Request = $_POST['ID_Request'];
-  $ID_Specialist = $_POST['ID_Specialist'];
-
-  $specialist_request = $bdd->prepare('SELECT employees.First_Name, employees.Last_Name FROM employees WHERE ID_Employee = ?');
-  $specialist_request->bindParam(1, $ID_Specialist);
-  $specialist_request->execute();
-
-  if ($specialist_request && $specialist_info = $specialist_request->fetch()) {
-    $request = $bdd->prepare('INSERT INTO tasks (Reception_Datetime, ID_Specialist, ID_Request) VALUES (?, ?, ?)');
-    $request->bindParam(1, $datetime);
-    $request->bindParam(2, $ID_Specialist);
-    $request->bindParam(3, $ID_Request);
-    $request->execute();
-
-    if ($request) {
-      echo "Request successfully transfered to ".$specialist_info['First_Name']." ".$specialist_info['Last_Name'].".";
+?>
+<html>
+<head>
+  <link rel="stylesheet" href="style/ticketDisplay.css"/>
+</head>
+<body>
+  <?php
+  $bdd=	new PDO("mysql:host=127.0.0.1;dbname=helpdesk",'helpdesk_default','xixn2lCbJe90Xa8n');//id et mdp tmp
+  $requete = $bdd->prepare("SELECT employees.ID_Employee AS ID_Specialist, employees.First_Name, employees.Last_Name, specialities.Speciality_Name FROM specialization
+    LEFT JOIN employees ON employees.ID_Employee = specialization.ID_Specialist
+    LEFT JOIN jobs ON jobs.ID_Job=employees.ID_Job
+    LEFT JOIN specialities ON specialities.ID_Speciality = specialization.ID_Speciality
+    WHERE employees.ID_Job = 3
+    GROUP BY employees.ID_Employee
+    ");
+    $requete->execute();
+    while ($resultat = $requete->fetch()) {
+      ?>
+      <div class="specialist_container">
+        <?php
+        echo "specialist name : ".$resultat["First_Name"].$resultat["Last_Name"];
+        echo "speciality : ".$resultat["Speciality_Name"];
+        ?>
+        <button class="transfer_request" onclick="callbackRequestTransfer(<?php echo $_GET['ID_Request'].",".$resultat['ID_Specialist'];?>)">Transfer request</button>
+      </div>
+      <?php
     }
-    else {
-      echo "Error: Couldn't transfer request to the specialist."
-    }
-  }
-  else {
-    echo "Error: No specialist found with ID ".$ID_Specialist.".";
-  }
-}
-else {
-  echo "Error: Missing parameters. The request couldn't be transfered.";
-}
-
-
-
-
-
-
-
-
-
-
- ?>
+    ?>
+  </body>
+  </html>

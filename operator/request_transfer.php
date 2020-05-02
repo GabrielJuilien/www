@@ -6,33 +6,58 @@ if (!$_SESSION['user_id']) {
 }
 
 if ($_SESSION['user_role'] !== 1) {
-  echo "You don't have permission to access this page.";
+  echo "You don't have permission to access this page";
   exit();
 }
-?>
-<html>
-  <head>
-    <link rel="stylesheet" href="style/ticketDisplay.css"/>
-  </head>
 
-<body>
+try {
+  $bdd = new PDO('mysql:dbname=helpdesk;host=localhost', 'helpdesk_default', 'xixn2lCbJe90Xa8n');
+}
+catch(PDOException $e) {
+  $e->getMessage();
+}
 
-		<?php
-			$bdd=	new PDO("mysql:host=127.0.0.1;dbname=helpdesk",'helpdesk_default','xixn2lCbJe90Xa8n');//id et mdp tmp
-			$requete = $bdd->prepare("SELECT employees.First_Name, employees.Last_Name, specialities.Speciality_Name FROM specialization WHERE employees.ID_Job =3
-				LEFT JOIN employees ON employees.ID_Employee = specialization.ID_Specialist
-				LEFT JOIN jobs ON jobs.ID_Job=employees.ID_Job
-				LEFT JOIN specialities ON specialities.ID_Speciality = specialization.ID_Speciality");
-			$requete->execute();
-			 while ($resultat = $requete->fetch()) {?>
-				<div class = "liste specialiste">
-				    <?php echo "specialist name : ".$resultat["First_Name"].$resultat[Last_Name]?>
-				    <?php echo "speciality : ".$resultat["Speciality_Name"] ?>
+if (isset($_GET['ID_Request']) && isset($_GET['ID_Specialist']))
+{
+  $ID_Request = $_GET['ID_Request'];
+  $ID_Specialist = $_GET['ID_Specialist'];
 
-				    <a href="transfer_request.php?ticket=<?php echo $_POST['ticket']?>&specialist=<?php echo $resultat['ID_Specialist'] ?>"> create task</a>
-		        </div>
+  $specialist_request = $bdd->prepare('SELECT employees.First_Name, employees.Last_Name FROM employees WHERE ID_Employee = ?');
+  $specialist_request->bindParam(1, $ID_Specialist);
+  $specialist_request->execute();
 
-		<?php } ?>
-</body>
+  $datetime = new DateTime();
+  $datetime = $datetime->format("Y-m-d H:i:s");
 
-</html>
+  if ($specialist_request && $specialist_info = $specialist_request->fetch()) {
+    $request = $bdd->prepare('INSERT INTO tasks (Reception_Datetime, ID_Specialist, ID_Request) VALUES (?, ?, ?)');
+    $request->bindParam(1, $datetime);
+    $request->bindParam(2, $ID_Specialist);
+    $request->bindParam(3, $ID_Request);
+    $request->execute();
+
+    if ($request) {
+      echo "Request successfully transfered to ".$specialist_info['First_Name']." ".$specialist_info['Last_Name'].".";
+    }
+    else {
+      echo "Error: Couldn't transfer request to the specialist.";
+    }
+  }
+  else {
+    echo "Error: No specialist found with ID ".$ID_Specialist.".";
+  }
+}
+else {
+  echo "Error: Missing parameters. The request couldn't be transfered.";
+}
+
+
+
+
+
+
+
+
+
+
+ ?>
