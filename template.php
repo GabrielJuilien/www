@@ -108,8 +108,7 @@ else {
   <title>Dashboard</title>
 </head>
 <body>
-  <div id="Header"> IT Helpdesk
-  </div>
+
   <div id ="base">
     <input type="checkbox" id="openMenu" checked="checked"/>
       <div id="menuToggle">

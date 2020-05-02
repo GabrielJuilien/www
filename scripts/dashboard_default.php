@@ -13,12 +13,18 @@ if ($_SESSION['user_role'] !== 0) {
 ?>
 
 //Buttons animation
+var contentVar = document.getElementById("content");
+
+
 document.getElementById("left_menu").addEventListener('click', function(event) {
   if(event.target && event.target.className === "button") {
     event.target.style.borderRightColor = "rgb(0,0,0,0)";
     event.target.style.backgroundColor = "#BBB";
     event.target.style.color = "#EEE";
+    document.getElementById("content").style.opacity = "1";
+    contentVar.classList.add("widthTransitionUp");
   }
+
   var parent_child_node_tab = event.target.parentNode.childNodes;
   var last = parent_child_node_tab.length - 1;
   var i = 0;
@@ -28,7 +34,6 @@ document.getElementById("left_menu").addEventListener('click', function(event) {
         parent_child_node_tab[i].style.borderRightColor = "#888";
         parent_child_node_tab[i].style.backgroundColor = "#DDD";
         parent_child_node_tab[i].style.color = "#888";
-
       }
     }
     i++;

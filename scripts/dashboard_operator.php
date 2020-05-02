@@ -18,6 +18,8 @@ document.getElementById("left_menu").addEventListener('click', function(event) {
     event.target.style.borderRightColor = "rgb(0,0,0,0)";
     event.target.style.backgroundColor = "#BBB";
     event.target.style.color = "#EEE";
+    document.getElementById("content").style.opacity = "1";
+
   }
   var parent_child_node_tab = event.target.parentNode.childNodes;
   var last = parent_child_node_tab.length - 1;

@@ -34,6 +34,9 @@ body {
   font-size: 32px;
   min-height: 80px;
   max-width: 376px;
+
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+
   transition: all 0.3s ease-in-out;
 }
 
@@ -60,8 +63,8 @@ body {
 }
 
 #left_menu .button:hover{
-  background-color: #777;
-  color: #EEE;
+  background-color: #777 !important;
+  color: #EEE !important;
 }
 
 #left_menu {
@@ -163,17 +166,19 @@ body {
 
 #content {
   position: relative;
-  margin: 10px auto 0px auto;
+  margin: 50px auto 0px 25%;
+  padding: 10px 10px 10px 10px;
   top: 0;
-  left: -200px;
+  left: -300px;
   text-align: center;
   max-width: 1000px;
   max-height: 700px;
+  width: 700px;
   border: 2px solid;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   color: #333;
   background-color: #EEE;
-
+  opacity: 0;
   transform-origin: 0% 0%;
   transform: translate(0, 0);
 
@@ -183,4 +188,8 @@ body {
 #openMenu:checked ~ #content
 {
   transform: translate(250px, 0);
+}
+
+#content.widthTransitionUp {
+  transition: 0.5s cubic-bezier(0.77,0.2,0.05,1.0);
 }
