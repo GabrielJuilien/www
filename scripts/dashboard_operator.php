@@ -36,6 +36,7 @@ document.getElementById("left_menu").addEventListener('click', function(event) {
     i++;
   }
 });
+
 //Main frame
 var page_content = document.getElementById("content");
 
@@ -48,7 +49,7 @@ var httpUserProfile = new XMLHttpRequest();
 var urlCreateRequestPage = "/operator/create_request.php";
 var urlDisplayRequests = "/operator/display_requests.php";
 var urlPendingRequests = "/operator/pending_requests.php";
-var httpUserProfile = "/operator/profile.php";
+var urlUserProfile = "/operator/profile.php";
 
 //Buttons listeners
 var buttonCreateRequest = document.getElementById("create_request");
@@ -160,6 +161,14 @@ function getRequestFormVariables() {
   page_content = document.getElementById("content");
 }
 
+var httpGetProblems = new XMLHttpRequest();
+var httpGetSolutions = new XMLHttpRequest();
+var httpPostRequest = new XMLHttpRequest();
+
+var urlGetProblems = "/operator/get_problems_device_type.php";
+var urlGetSolutions = "/operator/get_solutions_from_problem.php";
+var urlPostRequest = "/operator/set_request.php";
+
 //Request creation handlers
 function handlerGetProblems() {
   if (httpGetProblems.readyState === XMLHttpRequest.DONE) {
@@ -232,7 +241,7 @@ function callbackPostRequest() {
       httpPostRequest.open('POST', urlPostRequest);
       httpPostRequest.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 
-      var param = "problem_title=" + problem_form_title.value + "&problem_description=" + problem_form_description.value + "&ID_User=<?php echo $_SESSION['user_id']; ?>" + "&ID_Device=" + devices_select.options[devices_select.selectedIndex].value;
+      var param = "problem_title=" + problem_form_title.value + "&problem_description=" + problem_form_description.value + "&ID_User=" + document.getElementById("user_select").options[document.getElementById("user_select").selectedIndex].value + "&ID_Device=" + devices_select.options[devices_select.selectedIndex].value;
       httpPostRequest.send(param);
     }
   }
@@ -241,7 +250,7 @@ function callbackPostRequest() {
     httpPostRequest.open('POST', urlPostRequest);
     httpPostRequest.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 
-    var param = "ID_Problem=" + problems_select.options[problems_select.selectedIndex].value + "&ID_User=<?php echo $_SESSION['user_id']; ?>" + "&ID_Device=" + devices_select.options[devices_select.selectedIndex].value;
+    var param = "ID_Problem=" + problems_select.options[problems_select.selectedIndex].value + "&ID_User=" + document.getElementById("user_select").options[document.getElementById("user_select").selectedIndex].value + "&ID_Device=" + devices_select.options[devices_select.selectedIndex].value;
     httpPostRequest.send(param);
   }
 }

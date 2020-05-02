@@ -22,7 +22,8 @@ $ID_Problem = $_GET['ID_Problem'];
 //Select all solutions linked to this problem
 $request = $bdd->prepare('SELECT solutions.ID_Solution, solutions.solution_description FROM problems
                             JOIN relations ON relations.ID_Problem = ?
-                            RIGHT JOIN solutions ON solutions.ID_Solution = relations.ID_Solution');
+                            JOIN solutions ON solutions.ID_Solution = relations.ID_Solution
+                            GROUP BY ID_Solution');
 $request->bindParam(1, $ID_Problem);
 $request->execute();
 

@@ -241,11 +241,11 @@ switch ($_SESSION['user_role']) {
   <?php
   break;
   case 2: ?>
-  <script src="scripts/dashboard_specialist.js"></script>
+  <script src="scripts/dashboard_specialist.php"></script>
   <?php
   break;
   case 3: ?>
-  <script src="scripts/dashboard_manager.js"></script>
+  <script src="scripts/dashboard_manager.php"></script>
   <?php
   break;
 }

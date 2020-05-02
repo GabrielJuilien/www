@@ -42,7 +42,8 @@ while ($task = $request->fetch()) {
   Request n°<?php echo $task['ID_Request']; ?>:
   Received: <?php echo $task['Reception_Datetime']; ?>
   <?php echo $task['Problem_Title']; ?>
-  <button class="display_request" onclick="display_request(<?php echo $task['ID_Task'] ?>)">View request</button>
+  <button class="display_request" onclick="callbackDisplayRequest(<?php echo $task['ID_Task'] ?>)">View request</button>
+  <button class="request_transfer" onclick="callbackTransferRequest(<?php echo $task['ID_Task']; ?>)">Transfer request</button>
   <?php
 }
  ?>
