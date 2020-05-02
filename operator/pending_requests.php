@@ -22,6 +22,7 @@ if ($_SESSION['user_role'] !== 1) {
     LEFT JOIN devices ON requests.ID_Device = devices.ID_Device
     LEFT JOIN device_types ON devices.ID_Device_Type = device_types.ID_Device_Type
     WHERE requests.Processing_Datetime IS NULL
+    ORDER BY requests.Submission_Datetime
     ');
     $requete->execute();
 
@@ -51,9 +52,8 @@ if ($_SESSION['user_role'] !== 1) {
         <?php
         echo "ID Request: ".$resultat["ID_Request"];
         echo "Submitted on: ".$resultat["Submission_Datetime"];
-        echo "device types :".$resultat["devices_types"];
+        echo "Device type :".$resultat["Device_Type_Name"];
         echo "Waiting to be processed.";
-
         echo "\n Submitted by: ".$resultat["First_Name"]." ".$resultat["Last_Name"];
         ?>
 
