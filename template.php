@@ -113,7 +113,7 @@ else {
     <input type="checkbox" id="openMenu" checked="checked"/>
       <div id="menuToggle">
         <label for="openMenu">
-          <img src="/image/Hamburger_icon.png" id="Hamburger_icon"/>
+          <img src="/image/Hamburger_icon_orange.png" id="Hamburger_icon"/>
         </label>
         <div id="left_menu">
           <hr class="separator"/>

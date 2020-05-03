@@ -15,7 +15,6 @@ if ($_SESSION['user_role'] !== 0) {
 //Buttons animation
 var contentVar = document.getElementById("content");
 
-
 document.getElementById("left_menu").addEventListener('click', function(event) {
   if(event.target && event.target.className === "button") {
     event.target.style.borderRightColor = "rgb(0,0,0,0)";

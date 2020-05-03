@@ -18,8 +18,6 @@ body {
   background-image: url(image/html-color-codes-color-tutorials-hero-00e10b1f.jpg);
 }
 
-
-
 #left_menu .button {
   background-color: #DDD;
   cursor: pointer;
@@ -164,6 +162,7 @@ body {
 {
   transform: translate(250px, 0);
 }
+
 
 #content {
   position: relative;
