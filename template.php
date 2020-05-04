@@ -108,7 +108,7 @@ else {
   <title>Dashboard</title>
 </head>
 <body>
-
+  <div id="Header">IT helpdesk</div>
   <div id ="base">
     <input type="checkbox" id="openMenu" checked="checked"/>
       <div id="menuToggle">
@@ -123,21 +123,21 @@ else {
             <div class="button" id="create_request">
               <p>
                 <text>Create a request</text>
-                <img class="right_arrow" src="image/right-arrow.png"/>
+                <img class="right_arrow" src="image/pen.png"/>
               </p>
             </div>
             <hr class="separator"/>
             <div class="button" id="display_requests">
               <p>
                 <text>My requests</text>
-                <img class="right_arrow" src="image/right-arrow.png"/>
+                <img class="right_arrow" src="image/book.png"/>
               </p>
             </div>
             <hr class="separator"/>
             <div class="button" id="display_profile">
               <p>
                 <text>My profile</text>
-                <img class="right_arrow" src="image/right-arrow.png"/>
+                <img class="right_arrow" src="image/Profile.png"/>
               </p>
             </div>
             <?php
@@ -147,7 +147,7 @@ else {
             <div class="button" id="create_request">
               <p>
                 <text>Create a request</text>
-                <img class="right_arrow" src="image/right-arrow.png"/>
+                <img class="right_arrow" src="image/book.png"/>
               </p>
             </div>
             <hr class="separator"/>
@@ -168,7 +168,7 @@ else {
             <div class="button" id="display_profile">
               <p>
                 <text>My profile</text>
-                <img class="right_arrow" src="image/right-arrow.png"/>
+                <img class="right_arrow" src="image/image/Profile.png"/>
               </p>
             </div>
             <?php
@@ -185,7 +185,7 @@ else {
             <div class="button" id="display_profile">
               <p>
                 <text>My profile</text>
-                <img class="right_arrow" src="image/right-arrow.png"/>
+                <img class="right_arrow" src="image/image/Profile.png"/>
               </p>
             </div>
             <?php
@@ -209,7 +209,7 @@ else {
             <div class="button" id="display_profile">
               <p>
                 <text>My profile</text>
-                <img class="right_arrow" src="image/right-arrow.png"/>
+                <img class="right_arrow" src="image/Profile.png"/>
               </p>
             </div>
             <?php
@@ -219,7 +219,7 @@ else {
           <div class="button" id="disconnect" onclick='window.location.replace("/disconnect.php")'>
             <p>
               <text>Disconnect</text>
-              <img class="right_arrow" src="image/right-arrow.png"/>
+              <img class="right_arrow" src="/image/RootCLLogoSE.png"/>
             </p>
           </div>
           <hr class="separator"/>
@@ -249,5 +249,6 @@ switch ($_SESSION['user_role']) {
   <?php
   break;
 }
+
 ?>
 </html>

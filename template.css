@@ -5,12 +5,15 @@
 
 body {
   margin: 0;
-  font-family: "Merriweather";
+  font-family: "Comic Sans MS", "Comic Sans", cursive;
 }
 #Header {
-  background-color: rgb(0,150,200);
-  color: rgb(240,240,240);
+  background-image: linear-gradient(to bottom right,#1047A9, #4287f5);
+  color: #FFFFFF;
   text-align: center;
+  height: 25px;
+  width: 100vw;
+  z-index: 10;
 }
 #base {
   display: flex;
@@ -31,9 +34,7 @@ body {
   text-align: center;
   text-decoration: none;
   font-size: 32px;
-  min-height: 80px;
   max-width: 376px;
-
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 
   transition: all 0.3s ease-in-out;
@@ -44,11 +45,12 @@ body {
 }
 
 #left_menu .button text {
-  margin-right: 50px;
+  margin-right: 20px;
 }
 
 #left_menu .button img {
-  max-width: 35px;
+  width: 75px;
+  height: 75px;
   vertical-align: middle;
   margin: auto 2px auto auto;
 }
@@ -118,7 +120,7 @@ body {
   /* to stop flickering of text in safari */
 
   transform-origin: 0% 0%;
-  transform: translate(-100%, 0);
+  transform: translate(-200px, 0);
 
   transition: transform 0.5s cubic-bezier(0.77,0.2,0.05,1.0);
 }
@@ -148,7 +150,7 @@ body {
   height: 40px;
 
   top: 0px;
-  left:0px;
+  left:50px;
   background-size: cover;
   z-index: 2;
 
@@ -160,25 +162,29 @@ body {
 
 #openMenu:checked + #menuToggle #Hamburger_icon
 {
-  transform: translate(250px, 0);
+  transform: translate(200px, 0);
 }
 
 
 #content {
-  position: relative;
-  margin: 50px auto 0px 25%;
+  position: fixed;
+  margin: 50px 20vw 50px 35vw;
   padding: 10px 10px 10px 10px;
   top: 0;
   left: -300px;
+
   text-align: center;
-  max-width: 1000px;
+
   max-height: 700px;
-  width: 700px;
+  width: 967px;
+  height: 724px;
+
   border: 2px solid;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   color: #333;
   background-color: #EEE;
   opacity: 0;
+
   transform-origin: 0% 0%;
   transform: translate(0, 0);
 
@@ -187,9 +193,15 @@ body {
 
 #openMenu:checked ~ #content
 {
-  transform: translate(250px, 0);
+  transform: translate(200px, 0);
 }
 
 #content.widthTransitionUp {
   transition: 0.5s cubic-bezier(0.77,0.2,0.05,1.0);
+}
+
+#profileboard {
+  width: 99%;
+  height: 99%;
+  box-shadow: 0px 0px white;
 }
