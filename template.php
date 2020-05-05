@@ -168,7 +168,7 @@ else {
             <div class="button" id="display_profile">
               <p>
                 <text>My profile</text>
-                <img class="right_arrow" src="image/image/Profile.png"/>
+                <img class="right_arrow" src="image/Profile.png"/>
               </p>
             </div>
             <?php

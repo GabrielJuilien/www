@@ -1,3 +1,22 @@
+<?php
+session_start();
+
+if (!$_SESSION['user_id']) {
+  header("Location:/login.php");
+}
+
+if ($_SESSION['user_role'] !== 3) {
+  echo "You don't have permission to access this page.";
+  exit();
+}
+
+try {
+  $bdd = new PDO('mysql:dbname=helpdesk;host=localhost', 'helpdesk_default', 'xixn2lCbJe90Xa8n');
+}
+catch(PDOException $e) {
+  $e->getMessage();
+}
+?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
@@ -7,20 +26,6 @@
 </head>
 <body>
   <?php
-  session_start();
-  try {
-    $bdd = new PDO('mysql:dbname=helpdesk;host=localhost', 'helpdesk_default', 'xixn2lCbJe90Xa8n');
-  }
-  catch(PDOException $e) {
-    $e->getMessage();
-  }
-  if (!isset($_SESSION['user_id']))
-  {
-    ?>
-    <p>You're not logged in. You can <a href="login.php">login here.</a>
-      <?php
-    }
-    else{
       $req = $bdd->prepare('SELECT First_Name,Last_Name FROM employees WHERE ID_Employee=? LIMIT 1');
       $req->bindParam(1, $_SESSION['user_id']);
       $req->execute();
