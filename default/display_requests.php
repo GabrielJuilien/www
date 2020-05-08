@@ -42,7 +42,7 @@ if ($_SESSION['user_role'] !== 0) {
         }
         echo "Submitted by: ".$resultat["First_Name"]." ".$resultat["Last_Name"]."<br />";
         ?>
-        <button class="display_request" onclick="callbackDisplayRequest(<?php echo $resultat['ID_Request']; ?>)">View request</button>
+        <button class="display_request" onclick="callbackEditRequest(<?php echo $resultat['ID_Request']; ?>)">View request</button>
       </div>
       <?php
       while ($resultat = $requete->fetch()) {?>
@@ -62,7 +62,7 @@ if ($_SESSION['user_role'] !== 0) {
           }
           echo "\n Submitted by: ".$resultat["First_Name"]." ".$resultat["Last_Name"];
           ?>
-          <button class="display_request" onclick="callbackDisplayRequest(<?php echo $resultat['ID_Request']; ?>)">View request</button>
+          <button class="display_request" onclick="callbackEditRequest(<?php echo $resultat['ID_Request']; ?>)">View request</button>
         </div>
         <?php
       }

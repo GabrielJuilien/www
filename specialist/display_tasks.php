@@ -23,27 +23,57 @@ $request = $bdd->prepare('SELECT tasks.ID_Task, tasks.Reception_Datetime, reques
   JOIN requests ON requests.ID_Request = tasks.ID_Request
   JOIN relations ON relations.ID_Relation = requests.ID_Relation
   JOIN problems ON problems.ID_Problem = relations.ID_Problem
-  WHERE tasks.ID_Specialist = ?
+  WHERE tasks.ID_Specialist = ? AND tasks.Expedition_Datetime IS NULL
   ');
-$request->bindParam(1, $ID_Specialist);
-$request->execute();
+  $request->bindParam(1, $ID_Specialist);
+  $request->execute();
 
-if (!$request) {
-  echo "Error: Couldn't retrieve data for your ID.";
-  exit();
-}
-if ($request === 1) {
-  echo "You have no task.";
-  exit();
-}
+  if (!$request) {
+    echo "Error: Couldn't retrieve data for your ID.";
+    exit();
+  }
+  if ($request === 1) {
+    echo "You have no task.";
+    exit();
+  }
 
-while ($task = $request->fetch()) {
+  try {
+    $task = $request->fetch();
+  }
+  catch (Exception $e) {
+    ?>
+    No task to display.
+    <?php
+    exit();
+  }
+
+  if (!$task) {
+    ?>
+    No task to display.
+    <?php
+    exit();
+  }
+
   ?>
-  Request n°<?php echo $task['ID_Request']; ?>:
-  Received: <?php echo $task['Reception_Datetime']; ?>
-  <?php echo $task['Problem_Title']; ?>
-  <button class="display_request" onclick="callbackDisplayRequest(<?php echo $task['ID_Task'] ?>)">View request</button>
-  <button class="request_transfer" onclick="callbackTransferRequest(<?php echo $task['ID_Task']; ?>)">Transfer request</button>
+  <div class="conteneurticket">
+    <h3>Request n°<?php echo $task['ID_Request']; ?></h3>
+    Received: <?php echo $task['Reception_Datetime']; ?><br />
+    <?php echo $task['Problem_Title']; ?><br />
+    <button class="display_request" onclick="callbackEditRequest(<?php echo $task['ID_Task'] ?>)">View request</button>
+    <button class="request_transfer" onclick="callbackTransferRequest(<?php echo $task['ID_Task']; ?>)">Transfer request</button>
+  </div>
   <?php
-}
- ?>
+
+  while ($task = $request->fetch()) {
+    ?>
+    <hr class="separator">
+    <div class="conteneurticket">
+      <h3>Request n°<?php echo $task['ID_Request']; ?></h3>
+      Received: <?php echo $task['Reception_Datetime']; ?><br />
+      <?php echo $task['Problem_Title']; ?><br />
+      <button class="display_request" onclick="callbackEditRequest(<?php echo $task['ID_Task'] ?>)">View request</button>
+      <button class="request_transfer" onclick="callbackTransferRequest(<?php echo $task['ID_Task']; ?>)">Transfer request</button>
+    </div>
+    <?php
+  }
+  ?>

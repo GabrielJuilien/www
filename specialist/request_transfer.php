@@ -35,11 +35,19 @@ if (isset($_GET['ID_Task']) && isset($_GET['ID_Specialist']))
     $request->bindParam(2, $ID_Task);
     $request->execute();
 
-    $request = $bdd->prepare('INSERT INTO tasks (Reception_Datetime, ID_Specialist, ID_Request) VALUES (?, ?, (SELECT tasks.ID_Request FROM tasks WHERE tasks.ID_Task = ?;))');
+    $request = $bdd->prepare('SELECT ID_Request FROM tasks WHERE ID_Task = ?');
+    $request->bindParam(1, $ID_Task);
+    $request->execute();
+    $data = $request->fetch();
+    $ID_Request = $data['ID_Request'];
+
+    $request = $bdd->prepare('INSERT INTO tasks (Reception_Datetime, ID_Specialist, ID_Request) VALUES (?, ?, ?)');
     $request->bindParam(1, $datetime);
     $request->bindParam(2, $ID_Specialist);
-    $request->bindParam(3, $ID_task);
+    $request->bindParam(3, $ID_Request);
     $request->execute();
+
+    echo $ID_Specialist;
 
     if ($request) {
       echo "Request successfully transfered to ".$specialist_info['First_Name']." ".$specialist_info['Last_Name'].".";
@@ -55,14 +63,4 @@ if (isset($_GET['ID_Task']) && isset($_GET['ID_Specialist']))
 else {
   echo "Error: Missing parameters. The request couldn't be transfered.";
 }
-
-
-
-
-
-
-
-
-
-
  ?>

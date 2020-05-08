@@ -218,13 +218,14 @@ function callbackGetSolutions() {
 
 function callbackPostRequest() {
   if (problems_select.options[problems_select.selectedIndex].value == "NULL") {
-    if (user_problem_title.value.length <= 0) {
-      problem_form_error.innerHTML = "/!\\ You must set a title for your problem.";
+    problem_form_error.innerHTML = "";
+    if (user_problem_title.value.length <= 1) {
+      problem_form_error.innerHTML = "/!\\ You must set a title for your problem.<br />";
     }
-    if (user_problem_description.value.length <= 0) {
+    if (user_problem_description.value.length <= 1) {
       problem_form_error.innerHTML += "/!\\ You must must provide a description for your problem.";
     }
-    if (problem_form_error.innerHTML.length <= 0) {
+    if (problem_form_error.innerHTML.length != 0) {
       return;
     }
     else {
@@ -246,21 +247,21 @@ function callbackPostRequest() {
   }
 }
 
-//Display request
-var httpDisplayRequest = new XMLHttpRequest();
+//Edit request
+var httpEditRequest = new XMLHttpRequest();
 
-var urlDisplayRequest = "/default/display_request.php"
+var urlEditRequest = "/default/edit_request.php";
 
-function handlerDisplayRequest() {
-  if (httpDisplayRequest.readyState === XMLHttpRequest.DONE) {
-    page_content.innerHTML = "" + httpDisplayRequest.responseText;
+function handlerEditRequest() {
+  if (httpEditRequest.readyState === XMLHttpRequest.DONE) {
+    page_content.innerHTML = httpEditRequest.responseText;
   }
 }
 
-function callbackDisplayRequest(ID_Request) {
-  if (typeof(ID_Request) == "number") {
-    httpDisplayRequest.onreadystatechange = handlerDisplayRequest;
-    httpDisplayRequest.open('GET', urlDisplayRequest + "?ID_Request=" + ID_Request);
-    httpDisplayRequest.send();
+function callbackEditRequest(ID_Request) {
+  if(typeof(ID_Request) == "number") {
+    httpEditRequest.onreadystatechange = handlerEditRequest;
+    httpEditRequest.open('GET', urlEditRequest + "?ID_Request=" + ID_Request);
+    httpEditRequest.send();
   }
 }

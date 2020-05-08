@@ -13,12 +13,17 @@ if ($_SESSION['user_role'] !== 2) {
 ?>
 
 //Buttons animation
+var contentVar = document.getElementById("content");
+
 document.getElementById("left_menu").addEventListener('click', function(event) {
   if(event.target && event.target.className === "button") {
     event.target.style.borderRightColor = "rgb(0,0,0,0)";
     event.target.style.backgroundColor = "#BBB";
     event.target.style.color = "#EEE";
+    document.getElementById("content").style.opacity = "1";
+    contentVar.classList.add("widthTransitionUp");
   }
+
   var parent_child_node_tab = event.target.parentNode.childNodes;
   var last = parent_child_node_tab.length - 1;
   var i = 0;
@@ -28,7 +33,6 @@ document.getElementById("left_menu").addEventListener('click', function(event) {
         parent_child_node_tab[i].style.borderRightColor = "#888";
         parent_child_node_tab[i].style.backgroundColor = "#DDD";
         parent_child_node_tab[i].style.color = "#888";
-
       }
     }
     i++;
@@ -66,27 +70,12 @@ buttonUserProfile.addEventListener('click', function() {
 //Buttons handlers
 function handlerDisplayTasks() {
   if (httpDisplayTasks.readyState === XMLHttpRequest.DONE) {
-    switch(httpDisplayTasks.status) {
-      case 200:
-      break;
-      default:
-      return;
-      break;
-    }
     page_content.innerHTML = httpDisplayTasks.responseText;
   }
 }
 
 function handlerUserProfile() {
   if (httpUserProfile.readyState === XMLHttpRequest.DONE) {
-    switch(httpUserProfile.status) {
-      case 200:
-      break;
-      default:
-      return;
-      break;
-    }
-
     page_content.innerHTML = httpUserProfile.responseText;
   }
 }
@@ -146,5 +135,85 @@ function callbackRequestTransfer(ID_Task, ID_Specialist) {
     httpTransferRequest.onreadystatechange = handlerRequestTransfer;
     httpTransferRequest.open('GET', urlRequestTransfer + "?ID_Task=" + ID_Task + "&ID_Specialist=" + ID_Specialist);
     httpTransferRequest.send();
+  }
+}
+
+//Edit request
+var httpEditRequest = new XMLHttpRequest();
+
+var urlEditRequest = "/specialist/edit_request.php";
+
+function handlerEditRequest() {
+  if (httpEditRequest.readyState === XMLHttpRequest.DONE) {
+    page_content.innerHTML = httpEditRequest.responseText;
+  }
+}
+
+function callbackEditRequest(ID_Request) {
+  if(typeof(ID_Request) == "number") {
+    httpEditRequest.onreadystatechange = handlerEditRequest;
+    httpEditRequest.open('GET', urlEditRequest + "?ID_Request=" + ID_Request);
+    httpEditRequest.send();
+  }
+}
+
+//Discard request changes
+var httpDiscardChanges = new XMLHttpRequest();
+
+var urlDiscardChanges = "/specialist/display_requests.php";
+
+function handlerDiscardChanges() {
+  if (httpDiscardChanges.readyState === XMLHttpRequest.DONE) {
+    page_content.innerHTML = httpDiscardChanges.responseText;
+  }
+}
+
+function callbackDiscardChanges() {
+  httpDiscardChanges.onreadystatechange = handlerDiscardChanges;
+  httpDiscardChanges.open('GET', urlDiscardChanges);
+  httpDiscardChanges.send();
+}
+
+//Save changes
+var httpSaveChanges = new XMLHttpRequest();
+
+var urlSaveChanges = "/specialist/save_changes.php";
+
+function handlerSaveChanges() {
+  if (httpSaveChanges.readyState === XMLHttpRequest.DONE) {
+    page_content.innerHTML = httpSaveChanges.responseText;
+  }
+}
+
+function callbackSaveChanges(ID_Request) {
+  if (typeof(ID_Request) == "number") {
+    httpSaveChanges.onreadystatechange = handlerSaveChanges;
+    httpSaveChanges.open('POST', urlSaveChanges);
+    httpSaveChanges.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+
+    var params = "ID_Request=" + ID_Request + "&Problem_Title=" + document.getElementById('problem_title').value + "&Problem_Description=" + document.getElementById('problem_description').value + "&Solution_Description=" + document.getElementById('solution_description').value;
+    httpSaveChanges.send(params);
+  }
+}
+
+//Solve request
+var httpSolveRequest = new XMLHttpRequest();
+
+var urlSolveRequest = "/specialist/solve_request.php";
+
+function handlerSolveRequest() {
+  if (httpSolveRequest.onreadystatechange === XMLHttpRequest.DONE) {
+    page_content.innerHTML = httpSolveRequest.responseText;
+  }
+}
+
+function callbackSolveRequest(ID_Request) {
+  if (typeof(ID_Request) == "number") {
+    httpSolveRequest.onreadystatechange = handlerSolveRequest;
+    httpSolveRequest.open('POST', urlSolveRequest);
+    httpSolveRequest.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+
+    var params = "ID_Request=" + ID_Request + "&Problem_Title=" + document.getElementById('problem_title').value + "&Problem_Description=" + document.getElementById('problem_description').value + "&Solution_Description=" + document.getElementById('solution_description').value;
+    httpSolveRequest.send(params);
   }
 }

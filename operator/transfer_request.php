@@ -12,9 +12,6 @@ if ($_SESSION['user_role'] !== 1) {
 
 ?>
 <html>
-<head>
-  <link rel="stylesheet" href="style/ticketDisplay.css"/>
-</head>
 <body>
   <?php
   $bdd=	new PDO("mysql:host=127.0.0.1;dbname=helpdesk",'helpdesk_default','xixn2lCbJe90Xa8n');//id et mdp tmp
@@ -22,7 +19,7 @@ if ($_SESSION['user_role'] !== 1) {
     LEFT JOIN employees ON employees.ID_Employee = specialization.ID_Specialist
     LEFT JOIN jobs ON jobs.ID_Job=employees.ID_Job
     LEFT JOIN specialities ON specialities.ID_Speciality = specialization.ID_Speciality
-    WHERE employees.ID_Job = 3
+    WHERE employees.ID_Job = 3 AND employees.ID_Department = 3
     GROUP BY employees.ID_Employee
     ");
     $requete->execute();
@@ -31,7 +28,7 @@ if ($_SESSION['user_role'] !== 1) {
     }
     catch (Exception $e) {
       ?>
-      No available specialist.
+      No specialist available.
       <?php
     }
     ?>
