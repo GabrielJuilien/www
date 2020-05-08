@@ -25,42 +25,43 @@ if ($_SESSION['user_role'] !== 1) {
     $requete->execute();
     if ($requete && $resultat = $requete->fetch()) {
       ?>
-      <div class = "conteneurticket">
+      <div class = "conteneurticket" style="text-align: left;">
         <?php
-        echo "ID Request: ".$resultat["ID_Request"];
-        echo "Submitted on: ".$resultat["Submission_Datetime"];
-        echo "\n Request state: ";
+        echo "ID Request: ".$resultat["ID_Request"]."<br />";
+        echo "Submitted on: ".$resultat["Submission_Datetime"]."<br />";
+        echo "Request state: ";
         if (isset($resultat["Solve_Datetime"])) {
-          echo "Solved (".$resultat["Solve_Datetime"].")";
+          echo "Solved (".$resultat["Solve_Datetime"].")"."<br />";
         }
         else if (isset($resultat["Processing_Datetime"])){
-          echo "Getting processed since: (".$resultat["Processing_Datetime"].")";
+          echo "Getting processed (".$resultat["Processing_Datetime"].")"."<br />";
         }
         else {
-          echo "Waiting to be processed.";
+          echo "Waiting to be processed."."<br />";
         }
-        echo "\n Submitted by: ".$resultat["First_Name"]." ".$resultat["Last_Name"];
+        echo "\n Submitted by: ".$resultat["First_Name"]." ".$resultat["Last_Name"]."<br />";
         ?>
         <button class="edit_request" onclick="callbackEditRequest(<?php echo $resultat['ID_Request']; ?>)">Edit request</button>
         <button class="request_transfer" onclick="callbackTransferRequest(<?php echo $resultat['ID_Request']; ?>)">Transfer request</button>
       </div>
       <?php
       while ($resultat = $requete->fetch()) {?>
-        <div class = "conteneurticket">
+        <hr class="separator" style="padding: 0px;">
+        <div class = "conteneurticket" style="text-align: left;">
           <?php
-          echo "ID Request: ".$resultat["ID_Request"];
-          echo "Submitted on: ".$resultat["Submission_Datetime"];
+          echo "ID Request: ".$resultat["ID_Request"]."<br />";
+          echo "Submitted on: ".$resultat["Submission_Datetime"]."<br />";
           echo "\n Request state: ";
           if (isset($resultat["Solve_Datetime"])) {
-            echo "Solved (".$resultat["Solve_Datetime"].")";
+            echo "Solved (".$resultat["Solve_Datetime"].")"."<br />";
           }
           else if (isset($resultat["Processing_Datetime"])){
-            echo "Getting processed since: (".$resultat["Processing_Datetime"].")";
+            echo "Getting processed since: (".$resultat["Processing_Datetime"].")"."<br />";
           }
           else {
-            echo "Waiting to be processed.";
+            echo "Waiting to be processed."."<br />";
           }
-          echo "\n Submitted by: ".$resultat["First_Name"]." ".$resultat["Last_Name"];
+          echo "Submitted by: ".$resultat["First_Name"]." ".$resultat["Last_Name"]."<br />";
           ?>
 
           <button class="edit_request" onclick="callbackEditRequest(<?php echo $resultat['ID_Request']; ?>)">Edit request</button>

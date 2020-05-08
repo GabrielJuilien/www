@@ -182,7 +182,8 @@ function handlerGetProblems() {
 
 function handlerGetSolutions() {
   if (httpGetSolutions.readyState === XMLHttpRequest.DONE) {
-    solutions_div.innerHTML = "Please try following solutions. If your problem isn't fixed or if you are having any trouble with instructions, please fill the form.<br />";
+    if (httpGetSolutions.responseText != "")
+      solutions_div.innerHTML = "Please try following solutions. If your problem isn't fixed or if you are having any trouble with instructions, please fill above form.<br />";
     solutions_div.innerHTML += httpGetSolutions.responseText;
     problem_form.style.display = "block";
   }
@@ -227,13 +228,14 @@ function callbackGetSolutions() {
 
 function callbackPostRequest() {
   if (problems_select.options[problems_select.selectedIndex].value == "NULL") {
-    if (user_problem_title.value.length <= 0) {
-      problem_form_error.innerHTML = "/!\\ You must set a title for your problem.";
+    problem_form_error.innerHTML = "";
+    if (user_problem_title.value.length <= 1) {
+      problem_form_error.innerHTML = "/!\\ You must set a title for your problem.<br />";
     }
-    if (user_problem_description.value.length <= 0) {
+    if (user_problem_description.value.length <= 1) {
       problem_form_error.innerHTML += "/!\\ You must must provide a description for your problem.";
     }
-    if (problem_form_error.innerHTML.length <= 0) {
+    if (problem_form_error.innerHTML.length != 0) {
       return;
     }
     else {

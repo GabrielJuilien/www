@@ -175,9 +175,10 @@ body {
 
   text-align: center;
 
-  max-height: 700px;
+  min-height: 700px;
   width: 967px;
-  height: 724px;
+  max-height: 850px;
+  overflow-y:auto;
 
   border: 2px solid;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
@@ -204,4 +205,167 @@ body {
   width: 99%;
   height: 99%;
   box-shadow: 0px 0px white;
+}
+
+/*
+Request creation
+*/
+#device_div {
+  text-align: left;
+  font-size: 20px;
+}
+
+#device_div select {
+  width: 100%;
+  font-size: 15px;
+  margin: 5px 0px 15px 0px;
+}
+
+#problems_div {
+  text-align: left;
+  width: 100%;
+  font-size: 20px;
+  margin-bottom: 15px;
+}
+
+#problems_div select {
+  width:100%;
+  font-size: 15px;
+}
+
+#problem_form {
+  text-align: left;
+  width: 100%;
+  margin-bottom: 15px;
+  font-size: 20px;
+}
+
+#problem_form input, #problem_form textarea {
+  width: 100%;
+  font-size: 15px;
+}
+
+#problem_form textarea {
+  margin-top: 15px;
+  height: 400px;
+  max-width: 100%;
+  min-width: 100%;
+}
+
+#problem_form button {
+
+    padding: 0px;
+    margin: 0px;
+    border: 2px solid #888;
+    border-collapse: collapse;
+    margin-top: 15px;
+    height: 50px;
+    width: 25%;
+    font-size: 20px;
+}
+
+#problem_form button:hover {
+  background-color: #BBB;
+  transition: 0.2s;
+}
+
+#solutions_div {
+  margin-top: 20px;
+}
+
+
+/*
+Request edition
+*/
+.filler {
+  padding-left: 300px;
+}
+
+#request_info {
+  text-align: left;
+}
+
+#device_info {
+  text-align: justify;
+  margin-bottom: 10px;
+}
+
+#problem_info {
+  text-align: left;
+}
+
+#problem_title {
+  width:100%;
+  height: 25px;
+  font-size: 20px;
+}
+
+#problem_info textarea {
+  margin-top: 10px;
+  max-width: 100%;
+  min-width: 100%;
+  height: 15vh;
+}
+
+#problem_info button {
+  padding: 0px;
+  margin: 0px;
+  border: 2px solid #888;
+  border-collapse: collapse;
+  margin-top: 15px;
+  height: 50px;
+  width: 25%;
+  font-size: 20px;
+}
+
+#problem_info button:hover {
+  background-color: #BBB;
+  transition: 0.2s;
+}
+
+/*
+Requests display
+*/
+
+.conteneurticket {
+  text-align: left;
+}
+
+.conteneurticket button {
+  padding: 0px;
+  margin: 0px;
+  border: 2px solid #888;
+  border-collapse: collapse;
+  margin-top: 15px;
+  height: 50px;
+  width: 25%;
+  font-size: 20px;
+}
+
+.conteneurticket button:hover {
+  background-color: #BBB;
+  transition: 0.2s;
+}
+
+/*
+Request transfer_request
+*/
+.specialist_container {
+  text-align: left;
+}
+
+.specialist_container button {
+  padding: 0px;
+  margin: 0px;
+  border: 2px solid #888;
+  border-collapse: collapse;
+  margin-top: 15px;
+  height: 50px;
+  width: 25%;
+  font-size: 20px;
+}
+
+.specialist_container button:hover {
+  background-color: #BBB;
+  transition: 0.2s;
 }
