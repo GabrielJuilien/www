@@ -2,9 +2,6 @@
     width: 100%;
     height: 100%;
     background-color: lightgrey;
-    border: 5px solid;
-    border-color: orange;
-    /*box-shadow: 3px 6px grey;*/
     text-align: center;
     font-family: "Comic Sans MS", "Comic Sans", cursive;
 }

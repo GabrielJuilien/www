@@ -22,7 +22,7 @@ catch(PDOException $e) {
 <head>
   <meta charset="utf-8">
   <title>My Profile</title>
-  <link rel="stylesheet" href="style/profile.css"/>
+  <link rel="stylesheet" href="../style/profile.css"/>
 </head>
 <body>
   <?php
