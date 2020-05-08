@@ -1,6 +1,6 @@
 <?php
 session_start();
-
+/*
 if (!$_SESSION['user_id']) {
   header("Location:/login.php");
 }
@@ -8,7 +8,7 @@ if (!$_SESSION['user_id']) {
 if ($_SESSION['user_role'] !== 3) {
   echo "You don't have permission to access this page.";
   exit();
-}
+}*/
 
 $time="weeks";
 try {
@@ -20,12 +20,13 @@ catch(PDOException $e) {
 
 if($time=="week")
 {
-  $request = $bdd->prepare("SELECT DAYOFWEEK(requests.Submission_Datetime) AS DOW, COUNT(requests.ID_Request) AS count from requests WHERE requests.Solve_Datetime IS NULL AND DAY(requests.Submission_DateTime)>DAY(CURRENT_TIMESTAMP)-7 GROUP BY YEAR(requests.Submission_DateTime),MONTH(requests.Submission_DateTime),DAY(requests.Submission_DateTime) ");
+  $request = $bdd->prepare("SELECT DAYOFWEEK(requests.Submission_Datetime) AS DOW, COUNT(requests.ID_Request) AS count from requests WHERE DAY(requests.Submission_DateTime)>DAY(CURRENT_TIMESTAMP)-7 AND requests.ID_Operator= ? GROUP BY YEAR(requests.Submission_DateTime),MONTH(requests.Submission_DateTime),DAY(requests.Submission_DateTime) ");
 }
 else
 {
-  $request = $bdd->prepare("SELECT MONTH(requests.Submission_Datetime) AS month, COUNT(requests.ID_Request) AS count from requests WHERE requests.Solve_Datetime IS NULL AND DAY(requests.Submission_DateTime)>DAY(CURRENT_TIMESTAMP)-365 GROUP BY YEAR(requests.Submission_DateTime),MONTH(requests.Submission_DateTime)");
+  $request = $bdd->prepare("SELECT MONTH(requests.Submission_Datetime) AS month, COUNT(requests.ID_Request) AS count from requests WHERE DAY(requests.Submission_DateTime)>DAY(CURRENT_TIMESTAMP)-365 AND requests.ID_Operator= ? GROUP BY YEAR(requests.Submission_DateTime),MONTH(requests.Submission_DateTime)");
 }
+$requete->bindParam(1,$_GET['ID_Operator']);
 $request->execute();
 
 ?>
@@ -36,7 +37,7 @@ var ctx = document.getElementById('myChart').getContext('2d');
 var chart = new Chart(ctx,
   {
     // The type of chart we want to create10001
-    type: 'line',
+    type: 'bar',
 
     // The data for our dataset
     data:
@@ -101,7 +102,7 @@ var chart = new Chart(ctx,
       ?>
       datasets:
       [{
-        label: 'it works!!',
+        label: 'number of tickets processend by this operator',
         backgroundColor: 'rgb(255, 99, 132)',
         borderColor: 'rgb(255, 99, 132)',
         <?php echo $chain ;
