@@ -19,7 +19,7 @@ if ($_SESSION['user_role'] !== 1) {
   $bdd = new PDO('mysql:dbname=helpdesk;host=localhost', 'helpdesk_default', 'xixn2lCbJe90Xa8n');//id et mdp tmp
   $requete = $bdd->prepare('SELECT requests.ID_Request, requests.Submission_Datetime, requests.Processing_Datetime, requests.Solve_Datetime, employees.First_Name, employees.Last_Name FROM requests
     JOIN employees ON requests.ID_Submitter = employees.ID_Employee
-    WHERE requests.ID_Operator = ? AND requests.ID_Request NOT IN (SELECT ID_Request FROM tasks GROUP BY ID_Request)
+    WHERE requests.ID_Operator = ? AND requests.ID_Request NOT IN (SELECT ID_Request FROM tasks GROUP BY ID_Request) AND requests.Solve_Datetime IS NULL
     ');
     $requete->bindParam(1, $_SESSION['user_id']);
     $requete->execute();
@@ -41,7 +41,7 @@ if ($_SESSION['user_role'] !== 1) {
         }
         echo "\n Submitted by: ".$resultat["First_Name"]." ".$resultat["Last_Name"];
         ?>
-        <button class="display_request" onclick="callbackDisplayRequest(<?php echo $resultat['ID_Request']; ?>)">View request</button>
+        <button class="edit_request" onclick="callbackEditRequest(<?php echo $resultat['ID_Request']; ?>)">Edit request</button>
         <button class="request_transfer" onclick="callbackTransferRequest(<?php echo $resultat['ID_Request']; ?>)">Transfer request</button>
       </div>
       <?php
@@ -63,7 +63,7 @@ if ($_SESSION['user_role'] !== 1) {
           echo "\n Submitted by: ".$resultat["First_Name"]." ".$resultat["Last_Name"];
           ?>
 
-          <button class="display_request" onclick="callbackDisplayRequest(<?php echo $resultat['ID_Request']; ?>)">View request</button>
+          <button class="edit_request" onclick="callbackEditRequest(<?php echo $resultat['ID_Request']; ?>)">Edit request</button>
           <button class="request_transfer" onclick="callbackTransferRequest(<?php echo $resultat['ID_Request']; ?>)">Transfer request</button>
         </div>
         <?php

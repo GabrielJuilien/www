@@ -4,6 +4,7 @@ try {
 }
 catch(PDOException $e) {
   $e->getMessage();
+  exit();
 }
 
 
@@ -69,7 +70,7 @@ $request = $bdd->prepare('SELECT
 
   JOIN relations ON relations.ID_Relation = requests.ID_Relation
   JOIN problems ON problems.ID_Problem = relations.ID_Problem
-  LEFT JOIN solutions ON solutions.ID_Solution = relations.ID_Relation
+  LEFT JOIN solutions ON solutions.ID_Solution = relations.ID_Solution
 
   JOIN employees ON employees.ID_Employee = requests.ID_Submitter
   JOIN jobs ON jobs.ID_Job = employees.ID_Job
@@ -130,14 +131,16 @@ $request = $bdd->prepare('SELECT
     if (isset($data['Solve_Datetime'])) { ?>
       <h3><?php echo $data['Problem_Title']; ?></h3>
       <p><?php echo $data['Problem_Description']; ?></p>
+      <p><?php echo $data['Solution_Description']; ?></p>
       <?php
     }
     else {
       ?>
-      <input type="text" name="problem_title" value="<?php echo $data['Problem_Title']; ?>"><br />
-      <textarea name="problem_description"><?php echo $data['Problem_Description']; ?></textarea><br />
-      <button onclick="callbackCancel()">Discard changes</button>
-      <button onclick="callbackSaveRequest(<?php echo $data['ID_Request'] ?>)">Save changes</button>
+      <input id="problem_title" type="text" name="problem_title" value="<?php echo $data['Problem_Title']; ?>"><br />
+      <textarea id="problem_description" name="problem_description"><?php echo $data['Problem_Description']; ?></textarea><br />
+      <textarea id="solution_description" name="solution_description"><?php if(isset($data['Solution_Description'])) echo $data['Solution_Description'] ?></textarea><br />
+      <button onclick="callbackDiscardChanges()">Discard changes</button>
+      <button onclick="callbackSaveChanges(<?php echo $data['ID_Request'] ?>)">Save changes</button>
       <button onclick="callbackTransferRequest(<?php echo $data['ID_Request'] ?>)">Transfer request</button>
       <button onclick="callbackSolveRequest(<?php echo $data['ID_Request'] ?>)">Solve request</button>
       <?php

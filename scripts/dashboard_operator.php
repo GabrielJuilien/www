@@ -19,7 +19,7 @@ document.getElementById("left_menu").addEventListener('click', function(event) {
     event.target.style.backgroundColor = "#BBB";
     event.target.style.color = "#EEE";
     document.getElementById("content").style.opacity = "1";
-    
+
   }
   var parent_child_node_tab = event.target.parentNode.childNodes;
   var last = parent_child_node_tab.length - 1;
@@ -313,6 +313,25 @@ function callbackRequestTransfer(ID_Request, ID_Specialist) {
   }
 }
 
+//Edit request
+var httpEditRequest = new XMLHttpRequest();
+
+var urlEditRequest = "/operator/edit_request.php";
+
+function handlerEditRequest() {
+  if (httpEditRequest.readyState === XMLHttpRequest.DONE) {
+    page_content.innerHTML = httpEditRequest.responseText;
+  }
+}
+
+function callbackEditRequest(ID_Request) {
+  if(typeof(ID_Request) == "number") {
+    httpEditRequest.onreadystatechange = handlerEditRequest;
+    httpEditRequest.open('GET', urlEditRequest + "?ID_Request=" + ID_Request);
+    httpEditRequest.send();
+  }
+}
+
 //Accept request
 var httpAcceptRequest = new XMLHttpRequest();
 
@@ -329,5 +348,66 @@ function callbackAcceptRequest(ID_Request) {
     httpAcceptRequest.onreadystatechange = handlerAcceptRequest;
     httpAcceptRequest.open('GET', urlAcceptRequest + "?ID_Request=" + ID_Request);
     httpAcceptRequest.send();
+  }
+}
+
+//Discard request changes
+var httpDiscardChanges = new XMLHttpRequest();
+
+var urlDiscardChanges = "/operator/display_requests.php";
+
+function handlerDiscardChanges() {
+  if (httpDiscardChanges.readyState === XMLHttpRequest.DONE) {
+    page_content.innerHTML = httpDiscardChanges.responseText;
+  }
+}
+
+function callbackDiscardChanges() {
+  httpDiscardChanges.onreadystatechange = handlerDiscardChanges;
+  httpDiscardChanges.open('GET', urlDiscardChanges);
+  httpDiscardChanges.send();
+}
+
+//Save changes
+var httpSaveChanges = new XMLHttpRequest();
+
+var urlSaveChanges = "/operator/save_changes.php";
+
+function handlerSaveChanges() {
+  if (httpSaveChanges.readyState === XMLHttpRequest.DONE) {
+    page_content.innerHTML = httpSaveChanges.responseText;
+  }
+}
+
+function callbackSaveChanges(ID_Request) {
+  if (typeof(ID_Request) == "number") {
+    httpSaveChanges.onreadystatechange = handlerSaveChanges;
+    httpSaveChanges.open('POST', urlSaveChanges);
+    httpSaveChanges.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+
+    var params = "ID_Request=" + ID_Request + "&Problem_Title=" + document.getElementById('problem_title').value + "&Problem_Description=" + document.getElementById('problem_description').value + "&Solution_Description=" + document.getElementById('solution_description').value;
+    httpSaveChanges.send(params);
+  }
+}
+
+//Solve request
+var httpSolveRequest = new XMLHttpRequest();
+
+var urlSolveRequest = "/operator/solve_request.php";
+
+function handlerSolveRequest() {
+  if (httpSolveRequest.onreadystatechange === XMLHttpRequest.DONE) {
+    page_content.innerHTML = httpSolveRequest.responseText;
+  }
+}
+
+function callbackSolveRequest(ID_Request) {
+  if (typeof(ID_Request) == "number") {
+    httpSolveRequest.onreadystatechange = handlerSolveRequest;
+    httpSolveRequest.open('POST', urlSolveRequest);
+    httpSolveRequest.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+
+    var params = "ID_Request=" + ID_Request + "&Problem_Title=" + document.getElementById('problem_title').value + "&Problem_Description=" + document.getElementById('problem_description').value + "&Solution_Description=" + document.getElementById('solution_description').value;
+    httpSolveRequest.send(params);
   }
 }
