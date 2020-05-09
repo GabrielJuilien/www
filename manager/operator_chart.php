@@ -1,6 +1,6 @@
 <?php
 session_start();
-/*
+
 if (!$_SESSION['user_id']) {
   header("Location:/login.php");
 }
@@ -8,9 +8,8 @@ if (!$_SESSION['user_id']) {
 if ($_SESSION['user_role'] !== 3) {
   echo "You don't have permission to access this page.";
   exit();
-}*/
+}
 
-$time="weeks";
 try {
   $bdd = new PDO('mysql:dbname=helpdesk;host=localhost', 'helpdesk_default', 'xixn2lCbJe90Xa8n');
 }
@@ -18,18 +17,43 @@ catch(PDOException $e) {
   $e->getMessage();
 }
 
-if($time=="week")
+if (isset($_GET['time'])) {
+  $time = $_GET['time'];
+}
+else {
+  $time = "week";
+}
+
+if (isset($_GET['back_time'])) {
+    $back_time = $_GET['back_time']
+}
+else {
+  $back_time = 0;
+}
+
+if (!isset($_GET['ID_Operator'])) {
+  ?>
+  You must provide an Operator's ID.
+  <?php
+  exit();
+}
+
+if(!strcmp("week", $time))
 {
-  $request = $bdd->prepare("SELECT DAYOFWEEK(requests.Submission_Datetime) AS DOW, COUNT(requests.ID_Request) AS count from requests WHERE DAY(requests.Submission_DateTime)>DAY(CURRENT_TIMESTAMP)-7 AND requests.ID_Operator= ? GROUP BY YEAR(requests.Submission_DateTime),MONTH(requests.Submission_DateTime),DAY(requests.Submission_DateTime) ");
+  $request = $bdd->prepare("SELECT DAYOFWEEK(requests.Submission_Datetime) AS DOW, COUNT(requests.ID_Request) AS count from requests WHERE DAY(requests.Submission_DateTime)>DAY(CURRENT_TIMESTAMP) - ? AND DAY(requests.Submission_DateTime) < DAY(CURRENT_TIMESTAMP) - ? + 7 AND requests.ID_Operator= ? GROUP BY YEAR(requests.Submission_DateTime),MONTH(requests.Submission_DateTime),DAY(requests.Submission_DateTime) ");
+  $request->bindParam(1, $back_time * 7);
+  $request->bindParam(2, $back_time * 7);
 }
 else
 {
-  $request = $bdd->prepare("SELECT MONTH(requests.Submission_Datetime) AS month, COUNT(requests.ID_Request) AS count from requests WHERE DAY(requests.Submission_DateTime)>DAY(CURRENT_TIMESTAMP)-365 AND requests.ID_Operator= ? GROUP BY YEAR(requests.Submission_DateTime),MONTH(requests.Submission_DateTime)");
+  $request = $bdd->prepare("SELECT MONTH(requests.Submission_Datetime) AS month, COUNT(requests.ID_Request) AS count from requests WHERE DAY(requests.Submission_DateTime)>DAY(CURRENT_TIMESTAMP) - ? AND DAY(requests.Submission_DateTime) < DAY(CURRENT_TIMESTAMP) - ? + 365 AND requests.ID_Operator = ? GROUP BY YEAR(requests.Submission_DateTime),MONTH(requests.Submission_DateTime)");
+  $request->bindParam(1, $back_time * 365);
+  $request->bindParam(2, $back_time * 365);
 }
-$requete->bindParam(1,$_GET['ID_Operator']);
+$request->bindParam(3, $_GET['ID_Operator']);
 $request->execute();
-
 ?>
+
 <canvas id="myChart"></canvas>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
 <script>
@@ -43,11 +67,9 @@ var chart = new Chart(ctx,
     data:
     {
       <?php
-      if($time=="week")
+      if(!strcmp("week", $time))
       {
-
         echo  "labels: ['Monday', 'Tuesday', 'Wedneday', 'Thursday', 'Friday'],";?>
-
         <?php
         $chain="data: [";
         $tmptab = array(
@@ -102,7 +124,7 @@ var chart = new Chart(ctx,
       ?>
       datasets:
       [{
-        label: 'number of tickets processend by this operator',
+        label: 'Number of requests processd by operator <?php echo $_GET['ID_Operator'] ?>',
         backgroundColor: 'rgb(255, 99, 132)',
         borderColor: 'rgb(255, 99, 132)',
         <?php echo $chain ;

@@ -79,13 +79,6 @@ buttonUserProfile.addEventListener('click', function() {
 //Button handlers
 function handlerCreateRequestPage() {
   if (httpCreateRequestPage.readyState === XMLHttpRequest.DONE) {
-    switch(httpCreateRequestPage.status) {
-      case 200:
-      break;
-      default:
-      return;
-      break;
-    }
     page_content.innerHTML = httpCreateRequestPage.responseText;
     getRequestFormVariables();
   }
@@ -93,27 +86,12 @@ function handlerCreateRequestPage() {
 
 function handlerViewUserRequests() {
   if (httpViewUserRequests.readyState === XMLHttpRequest.DONE) {
-    switch (httpViewUserRequests.status) {
-      case 200:
-        break;
-      default:
-        return;
-        break;
-    }
     page_content.innerHTML = httpViewUserRequests.responseText;
   }
 }
 
 function handlerUserProfile() {
   if (httpUserProfile.readyState === XMLHttpRequest.DONE) {
-    switch(httpUserProfile.status) {
-      case 200:
-      break;
-      default:
-      return;
-      break;
-    }
-
     page_content.innerHTML = httpUserProfile.responseText;
   }
 }

@@ -1,6 +1,6 @@
 <?php
 session_start();
-/*
+
 if (!$_SESSION['user_id']) {
   header("Location:/login.php");
 }
@@ -8,9 +8,8 @@ if (!$_SESSION['user_id']) {
 if ($_SESSION['user_role'] !== 3) {
   echo "You don't have permission to access this page.";
   exit();
-}*/
+}
 
-$time="weeks";
 try {
   $bdd = new PDO('mysql:dbname=helpdesk;host=localhost', 'helpdesk_default', 'xixn2lCbJe90Xa8n');
 }
@@ -18,13 +17,31 @@ catch(PDOException $e) {
   $e->getMessage();
 }
 
-if($time=="week")
+if (isset($_GET['time'])) {
+  $time = $_GET['time'];
+}
+else {
+  $time = "week";
+}
+
+if (isset($_GET['back_time'])) {
+    $back_time = $_GET['back_time']
+}
+else {
+  $back_time = 0;
+}
+
+if (!strcmp("week", $time))
 {
-  $request = $bdd->prepare("SELECT DAYOFWEEK(requests.Submission_Datetime) AS DOW, CAST(AVG(requests.Solve_Datetime - requests.Submission_Datetime)AS DATE ) AS VALUE  from requests WHERE DAY(requests.Submission_DateTime)>DAY(CURRENT_TIMESTAMP)-7 AND requests.Solve_Datetime IS NOT NULL GROUP BY YEAR(requests.Submission_DateTime),MONTH(requests.Submission_DateTime),DAY(requests.Submission_DateTime) ");
+  $request = $bdd->prepare("SELECT DAYOFWEEK(requests.Submission_Datetime) AS DOW, CAST(AVG(requests.Solve_Datetime - requests.Submission_Datetime)AS DATE ) AS VALUE  from requests WHERE DAY(requests.Submission_DateTime) > DAY(CURRENT_TIMESTAMP) - ? AND DAY(requests.Submission_DateTime) < DAY(CURRENT_TIMESTAMP) - ? + 7 AND requests.Solve_Datetime IS NOT NULL GROUP BY YEAR(requests.Submission_DateTime),MONTH(requests.Submission_DateTime),DAY(requests.Submission_DateTime) ");
+  $request->bindParam(1, 7 * $back_time);
+  $request->bindParam(2, 7 * $back_time);
 }
 else
 {
-  $request = $bdd->prepare("SELECT MONTH(requests.Submission_Datetime) AS month, CAST(AVG(requests.Solve_Datetime - requests.Submission_Datetime)AS DATE) AS VALUE from requests WHERE DAY(requests.Submission_DateTime)>DAY(CURRENT_TIMESTAMP)-365 AND requests.Solve_Datetime IS NOT NULL GROUP BY YEAR(requests.Submission_DateTime),MONTH(requests.Submission_DateTime)");
+  $request = $bdd->prepare("SELECT MONTH(requests.Submission_Datetime) AS month, CAST(AVG(requests.Solve_Datetime - requests.Submission_Datetime)AS DATE) AS VALUE from requests WHERE DAY(requests.Submission_DateTime) > DAY(CURRENT_TIMESTAMP) - ? AND DAY(requests.Submission_DateTime) < DAY(CURRENT_TIMESTAMP) - ? + 365 AND requests.Solve_Datetime IS NOT NULL GROUP BY YEAR(requests.Submission_DateTime),MONTH(requests.Submission_DateTime)");
+  $request->bindParam(1, 365 * $back_time);
+  $request->bindParam(2, 365 * $back_time);
 }
 $request->execute();
 
@@ -35,19 +52,16 @@ $request->execute();
 var ctx = document.getElementById('myChart').getContext('2d');
 var chart = new Chart(ctx,
   {
-    // The type of chart we want to create10001
+    // The type of chart we want to create
     type: 'line',
 
     // The data for our dataset
     data:
     {
       <?php
-      if($time=="week")
+      if (!strcmp("week", $time))
       {
-
-        echo  "labels: ['Monday', 'Tuesday', 'Wedneday', 'Thursday', 'Friday'],";?>
-
-        <?php
+        echo  "labels: ['Monday', 'Tuesday', 'Wedneday', 'Thursday', 'Friday'],";
         $chain="data: [";
         $tmptab = array(
           1=>date(DATE_ATOM, mktime(0, 0, 0, 0, 0, 0)),
@@ -95,7 +109,7 @@ var chart = new Chart(ctx,
         {
           $chain.="'".$tmptab[$i]."',";
         }
-        $chain =rtrim($chain,",");
+        $chain = rtrim($chain,",");
         $chain.="],";
       }
       ?>
@@ -105,24 +119,21 @@ var chart = new Chart(ctx,
         label: 'average time of resolution tickets',
         backgroundColor: 'rgb(255, 99, 132)',
         borderColor: 'rgb(255, 99, 132)',
-        <?php echo $chain ;
-        ?>
+        <?php echo $chain; ?>
+      }]
+    },
 
+    scales:
+    {
+      xAxes:
+      [{
+        type: 'time',
+        time:
+        {
+          unit: 'month'
+        }
       }]
     }
-
-      scales:
-       {
-         xAxes:
-          [{
-            type: 'time',
-            time: 
-             {
-               unit: 'month'
-             }
-          }]
-        }
-  },
-
+  }
 );
 </script>

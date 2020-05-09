@@ -1,6 +1,6 @@
 <?php
 session_start();
-/*
+
 if (!$_SESSION['user_id']) {
   header("Location:/login.php");
 }
@@ -8,9 +8,8 @@ if (!$_SESSION['user_id']) {
 if ($_SESSION['user_role'] !== 3) {
   echo "You don't have permission to access this page.";
   exit();
-}*/
+}
 
-$time="weeks";
 try {
   $bdd = new PDO('mysql:dbname=helpdesk;host=localhost', 'helpdesk_default', 'xixn2lCbJe90Xa8n');
 }
@@ -18,13 +17,31 @@ catch(PDOException $e) {
   $e->getMessage();
 }
 
-if($time=="week")
+if (isset($_GET['time'])) {
+  $time = $_GET['time'];
+}
+else {
+  $time = "week";
+}
+
+if (isset($_GET['back_time'])) {
+    $back_time = $_GET['back_time']
+}
+else {
+  $back_time = 0;
+}
+
+if(!strcmp("week", $time))
 {
-  $request = $bdd->prepare("SELECT DAYOFWEEK(requests.Submission_Datetime) AS DOW, COUNT(requests.ID_Request) AS count from requests WHERE requests.Solve_Datetime IS NULL AND DAY(requests.Submission_DateTime)>DAY(CURRENT_TIMESTAMP)-7 GROUP BY YEAR(requests.Submission_DateTime),MONTH(requests.Submission_DateTime),DAY(requests.Submission_DateTime) ");
+  $request = $bdd->prepare("SELECT DAYOFWEEK(requests.Submission_Datetime) AS DOW, COUNT(requests.ID_Request) AS count from requests WHERE requests.Solve_Datetime IS NULL AND DAY(requests.Submission_DateTime) > DAY(CURRENT_TIMESTAMP) - ? AND DAY(requests.Submission_DateTime) < DAY(CURRENT_TIMESTAMP) - ? + 7 GROUP BY YEAR(requests.Submission_DateTime),MONTH(requests.Submission_DateTime),DAY(requests.Submission_DateTime)");
+  $request->bindParam(1, 7 * $back_time);
+  $request->bindParam(2, 7 * $back_time);
 }
 else
 {
-  $request = $bdd->prepare("SELECT MONTH(requests.Submission_Datetime) AS month, COUNT(requests.ID_Request) AS count from requests WHERE requests.Solve_Datetime IS NULL AND DAY(requests.Submission_DateTime)>DAY(CURRENT_TIMESTAMP)-365 GROUP BY YEAR(requests.Submission_DateTime),MONTH(requests.Submission_DateTime)");
+  $request = $bdd->prepare("SELECT MONTH(requests.Submission_Datetime) AS month, COUNT(requests.ID_Request) AS count from requests WHERE requests.Solve_Datetime IS NULL AND DAY(requests.Submission_DateTime) > DAY(CURRENT_TIMESTAMP) - ? AND DAY(requests.Submission_DateTime) < DAY(CURRENT_TIMESTAMP) - ? + 365 GROUP BY YEAR(requests.Submission_DateTime),MONTH(requests.Submission_DateTime)");
+  $request->bindParam(1, 365 * $back_time);
+  $request->bindParam(2, 365 * $back_time);
 }
 $request->execute();
 
@@ -42,12 +59,9 @@ var chart = new Chart(ctx,
     data:
     {
       <?php
-      if($time=="week")
+      if(!strcmp("week", $time))
       {
-
-        echo  "labels: ['Monday', 'Tuesday', 'Wedneday', 'Thursday', 'Friday'],";?>
-
-        <?php
+        echo  "labels: ['Monday', 'Tuesday', 'Wedneday', 'Thursday', 'Friday'],";
         $chain="data: [";
         $tmptab = array(
           1=>0,
@@ -67,7 +81,7 @@ var chart = new Chart(ctx,
           $chain.="'".$tmptab[$i]."',";
         }
         $chain =rtrim($chain,",");
-        $chain.="],";
+        $chain.="]";
       }
       else
       {
@@ -96,19 +110,18 @@ var chart = new Chart(ctx,
           $chain.="'".$tmptab[$i]."',";
         }
         $chain =rtrim($chain,",");
-        $chain.="],";
+        $chain.="]";
       }
       ?>
+
       datasets:
       [{
-        label: 'number of tickets in waiting of operator',
+        label: 'Requests waiting to be processed.',
         backgroundColor: 'rgb(255, 99, 132)',
         borderColor: 'rgb(255, 99, 132)',
-        <?php echo $chain ;
-        ?>
+        <?php echo $chain; ?>
       }]
     }
-  },
-
+  }
 );
 </script>

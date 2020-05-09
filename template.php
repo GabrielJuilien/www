@@ -185,7 +185,7 @@ else {
             <div class="button" id="display_profile">
               <p>
                 <text>My profile</text>
-                <img class="right_arrow" src="image/image/Profile.png"/>
+                <img class="right_arrow" src="image/Profile.png"/>
               </p>
             </div>
             <?php
@@ -194,14 +194,7 @@ else {
             ?>
             <div class="button" id="display_performances">
               <p>
-                <text>Current requests</text>
-                <img class="right_arrow" src="image/right-arrow.png"/>
-              </p>
-            </div>
-            <hr class="separator"/>
-            <div class="button" id="display_pending_request">
-              <p>
-                <text>Pending requests</text>
+                <text>Performance charts</text>
                 <img class="right_arrow" src="image/right-arrow.png"/>
               </p>
             </div>
@@ -249,6 +242,5 @@ switch ($_SESSION['user_role']) {
   <?php
   break;
 }
-
 ?>
 </html>
