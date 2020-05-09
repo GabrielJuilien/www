@@ -46,21 +46,22 @@ if ($_SESSION['user_role'] !== 0) {
       </div>
       <?php
       while ($resultat = $requete->fetch()) {?>
+        <hr class="separator">
         <div class = "conteneurticket">
           <?php
-          echo "ID Request: ".$resultat["ID_Request"];
-          echo "Submitted on: ".$resultat["Submission_Datetime"];
-          echo "\n Request state: ";
+          echo "ID Request: ".$resultat["ID_Request"]."<br />";
+          echo "Submitted on: ".$resultat["Submission_Datetime"]."<br />";
+          echo "Request state: ";
           if (isset($resultat["Solve_Datetime"])) {
-            echo "Solved (".$resultat["Solve_Datetime"].")";
+            echo "Solved (".$resultat["Solve_Datetime"].")"."<br />";
           }
           else if (isset($resultat["Processing_Datetime"])){
-            echo "Getting processed since: (".$resultat["Processing_Datetime"].")";
+            echo "Getting processed since: (".$resultat["Processing_Datetime"].")"."<br />";
           }
           else {
-            echo "Waiting to be processed.";
+            echo "Waiting to be processed."."<br />";
           }
-          echo "\n Submitted by: ".$resultat["First_Name"]." ".$resultat["Last_Name"];
+          echo "Submitted by: ".$resultat["First_Name"]." ".$resultat["Last_Name"]."<br />";
           ?>
           <button class="display_request" onclick="callbackEditRequest(<?php echo $resultat['ID_Request']; ?>)">View request</button>
         </div>

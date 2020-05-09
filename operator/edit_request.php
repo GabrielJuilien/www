@@ -93,9 +93,9 @@ $request = $bdd->prepare('SELECT
   LEFT JOIN employees AS operator ON operator.ID_Employee = requests.ID_Operator
 
   LEFT JOIN tasks ON tasks.ID_Request = requests.ID_Request
-  JOIN employees AS specialist ON employees.ID_Employee = tasks.ID_Specialist
-  JOIN specialization ON specialist.ID_Employee = specialization.ID_Specialist
-  JOIN specialities ON specialities.ID_Speciality = specialization.ID_Speciality
+  LEFT JOIN employees AS specialist ON specialist.ID_Employee = tasks.ID_Specialist
+  LEFT JOIN specialization ON specialist.ID_Employee = specialization.ID_Specialist
+  LEFT JOIN specialities ON specialities.ID_Speciality = specialization.ID_Speciality
 
   WHERE
   requests.ID_Request = ?');

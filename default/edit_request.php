@@ -92,9 +92,9 @@ $request = $bdd->prepare('SELECT
   LEFT JOIN employees AS operator ON operator.ID_Employee = requests.ID_Operator
 
   LEFT JOIN tasks ON tasks.ID_Request = requests.ID_Request
-  JOIN employees AS specialist ON employees.ID_Employee = tasks.ID_Specialist
-  JOIN specialization ON specialist.ID_Employee = specialization.ID_Specialist
-  JOIN specialities ON specialities.ID_Speciality = specialization.ID_Speciality
+  LEFT JOIN employees AS specialist ON specialist.ID_Employee = tasks.ID_Specialist
+  LEFT JOIN specialization ON specialist.ID_Employee = specialization.ID_Specialist
+  LEFT JOIN specialities ON specialities.ID_Speciality = specialization.ID_Speciality
 
   WHERE
   requests.ID_Request = ?
@@ -102,8 +102,10 @@ $request = $bdd->prepare('SELECT
 
   $request->bindParam(1, $_GET['ID_Request']);
   $request->execute();
+
   $data = $request->fetch();
-  $submission_datetime = DateTime::createFromFormat("Y-m-d H:i:s" ,$data['Submission_Datetime']);
+
+  $submission_datetime = DateTime::createFromFormat("Y-m-d H:i:s", $data['Submission_Datetime']);
   if (!empty($data['Processing_Datetime'])) {
     $processing_datetime = DateTime::createFromFormat("Y-m-d H:i:s", $data['Processing_Datetime']);
   }
@@ -184,5 +186,12 @@ $request = $bdd->prepare('SELECT
   <div id="problem_info">
     <h3><?php echo $data['Problem_Title']; ?></h3>
     <p><?php echo $data['Problem_Description']; ?></p>
-    <p><?php echo $data['Solution_Description']; ?></p>
+    <?php
+    if (isset($data['Solution_Description'])) {
+      ?>
+      <h3>Solution:</h3>
+      <p><?php echo $data['Solution_Description']; ?></p>
+      <?php
+    }
+    ?>
   </div>

@@ -49,14 +49,14 @@ catch(PDOException $e) {
       </div>
       <div id="problems_div">
       </div>
-      <div id="solutions_div">
-      </div>
       <div id="problem_form" style="display:none;">
           <input type="text" id="problem_form_title" name="problem_title" placeholder="Give a title to your problem..."></input><br/>
           <textarea id="problem_form_description" name="problem_description" placeholder="Describe your problem here..."></textarea>
           <button id="problem_form_button" onclick="callbackPostRequest()">Post request</button>
           <div id="problem_form_error">
           </div>
+      </div>
+      <div id="solutions_div">
       </div>
     </form>
   </body>
