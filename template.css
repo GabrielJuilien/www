@@ -226,6 +226,11 @@ form {
   width: 100%;
   font-size: 15px;
   margin: 5px 0px 15px 0px;
+  height: 5vh;
+}
+
+#device_div select:focus {
+  border-color: dodgerblue;
 }
 
 #problems_div {
@@ -238,6 +243,11 @@ form {
 #problems_div select {
   width:100%;
   font-size: 15px;
+  height: 5vh;
+}
+
+#problems_div select:focus {
+  border-color: dodgerblue;
 }
 
 #problem_form {
@@ -254,7 +264,7 @@ form {
 
 #problem_form textarea {
   margin-top: 15px;
-  height: 400px;
+  height: 20vh;
   max-width: 100%;
   min-width: 100%;
 }
