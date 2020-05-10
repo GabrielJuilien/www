@@ -25,7 +25,7 @@ else {
 }
 
 if (isset($_POST['back_time'])) {
-    $back_time = $_POST['back_time'];
+  $back_time = $_POST['back_time'];
 }
 else {
   $back_time = 0;
@@ -33,93 +33,95 @@ else {
 
 if(!strcmp("week", $time))
 {
-  $request = $bdd->prepare("SELECT DAYOFWEEK(requests.Submission_Datetime) AS DOW, COUNT(requests.ID_Request) AS count from requests WHERE requests.Solve_Datetime IS NULL AND DAY(requests.Submission_DateTime) > DAY(CURRENT_TIMESTAMP) - ? * 7 AND DAY(requests.Submission_DateTime) < DAY(CURRENT_TIMESTAMP) - ? * 7 + 7 GROUP BY YEAR(requests.Submission_DateTime),MONTH(requests.Submission_DateTime),DAY(requests.Submission_DateTime)");
-  $request->bindParam(1, $back_time);
-  $request->bindParam(2, $back_time);
-}
-else
-{
-  $request = $bdd->prepare("SELECT MONTH(requests.Submission_Datetime) AS month, COUNT(requests.ID_Request) AS count from requests WHERE requests.Solve_Datetime IS NULL AND DAY(requests.Submission_DateTime) > DAY(CURRENT_TIMESTAMP) - ? * 365 AND DAY(requests.Submission_DateTime) < DAY(CURRENT_TIMESTAMP) - ? * 365 + 365 GROUP BY YEAR(requests.Submission_DateTime),MONTH(requests.Submission_DateTime)");
-  $request->bindParam(1, $back_time);
-  $request->bindParam(2, $back_time);
-}
-$request->execute();
-
-?>
-function createGeneralChart() {
-  var ctx = document.getElementById('myChart').getContext('2d');
-  var chart = new Chart(ctx,
-    {
-      // The type of chart we want to create10001
-      type: 'bar',
-
-      // The data for our dataset
-      data:
-      {
-        <?php
-        if(!strcmp("week", $time))
-        {
-          echo  "labels: ['Monday', 'Tuesday', 'Wedneday', 'Thursday', 'Friday'],";
-          $chain="data: [";
-          $tmptab = array(
-            1=>0,
-            2=>0,
-            3=>0,
-            4=>0,
-            5=>0,
-            6=>0,
-            7=>0,
-          );
-          while ($Cdata = $request->fetch())
-          {
-            $tmptab[$Cdata['DOW']]=$Cdata['count'];
-          }
-          for($i = 2;$i < 7;$i++)
-          {
-            $chain.="'".$tmptab[$i]."',";
-          }
-          $chain =rtrim($chain,",");
-          $chain.="]";
-        }
-        else
-        {
-          echo "labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July','August','September','October','November','December'],";
-          $chain="data: [";
-          $tmptab = array(
-            1=>0,
-            2=>0,
-            3=>0,
-            4=>0,
-            5=>0,
-            6=>0,
-            7=>0,
-            8=>0,
-            9=>0,
-            10=>0,
-            11=>0,
-            12=>0,
-          );
-          while ($Cdata = $request->fetch())
-          {
-            $tmptab[$Cdata['month']]=$Cdata['count'];
-          }
-          for($i = 1;$i < 13;$i++)
-          {
-            $chain.="'".$tmptab[$i]."',";
-          }
-          $chain =rtrim($chain,",");
-          $chain.="]";
-        }
-        ?>
-
-        datasets:
-        [{
-          label: 'Requests waiting to be processed.',
-          backgroundColor: 'rgb(255, 99, 132)',
-          borderColor: 'rgb(255, 99, 132)',
-          <?php echo $chain; ?>
-        }]
-      }
+  $request = $bdd->prepare("SELECT
+    COUNT(ID_Request) AS Unsolved_Requests,
+    WEEKDAY(Submission_Datetime) AS Weekday,
+    WEEK(Submission_Datetime) AS Week
+    FROM
+    requests
+    WHERE
+    Solve_Datetime IS NULL
+    AND WEEK(Submission_Datetime) = WEEK(NOW()) + ?
+    AND WEEKDAY(Submission_Datetime) IN(0, 1, 2, 3, 4)
+    GROUP BY
+    WEEKDAY(Submission_Datetime)
+    ORDER BY
+    WEEKDAY(Submission_Datetime)");
+    $request->bindParam(1, $back_time);
+  }
+  else
+  {
+    $request = $bdd->prepare("SELECT
+      COUNT(ID_Request) AS Unsolved_Requests,
+      MONTH(Submission_Datetime) AS Month,
+      YEAR(Submission_Datetime) AS Year
+      FROM
+      requests
+      WHERE
+      Solve_Datetime IS NULL
+      AND YEAR(Submission_Datetime) = YEAR(NOW()) + ?
+      GROUP BY
+      MONTH(Submission_Datetime)
+      ORDER BY
+      MONTH(Submission_Datetime)");
+      $request->bindParam(1, $back_time);
     }
-  );
-}
+    $request->execute();
+    $data = $request->fetch()
+    ?>
+    function createGeneralChart() {
+      var ctx = document.getElementById('myChart').getContext('2d');
+      var chart = new Chart(ctx,
+      {
+        // The type of chart we want to create10001
+        type: 'bar',
+
+        // The data for our dataset
+        data:
+        {
+          <?php
+          if(!strcmp("week", $time))
+          {
+            $week_num = $data['Week'];
+            echo  "labels: ['Monday', 'Tuesday', 'Wedneday', 'Thursday', 'Friday'],";
+            $chain = "data: [";
+            for ($i = 0; $i < 5; $i++) {
+              if ($data['Weekday'] == $i && $data['Unsolved_Requests']) {
+                $chain .= $data['Unsolved_Requests'].",";
+                $data = $request->fetch();
+              }
+              else {
+                $chain .= "0,";
+              }
+            }
+            $chain.="]";
+          }
+          else
+          {
+            $week_num = $data['Year'];
+            echo "labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July','August','September','October','November','December'],";
+            $chain="data: [";
+            for ($i = 1; $i < 13; $i++) {
+              if ($data['Month'] == $i && $data['Unsolved_Requests']) {
+                $chain .= $data['Unsolved_Requests'].",";
+                $data = $request->fetch();
+              }
+              else {
+                $chain .= "0,";
+              }
+            }
+            $chain.="],";
+          }
+          ?>
+
+          datasets:
+          [{
+            label: 'Requests waiting to be processed in <?php if ($time == "week") echo "week ".$week_num; else echo "year ".$week_num; ?>',
+            backgroundColor: 'rgb(255, 99, 132)',
+            borderColor: 'rgb(255, 99, 132)',
+            <?php echo $chain; ?>
+          }]
+        }
+      }
+      );
+    }

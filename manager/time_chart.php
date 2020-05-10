@@ -33,18 +33,41 @@ else {
 
 if (!strcmp("week", $time))
 {
-  $request = $bdd->prepare("SELECT DAYOFWEEK(requests.Submission_Datetime) AS DOW, CAST(AVG(requests.Solve_Datetime - requests.Submission_Datetime)AS DATE ) AS VALUE  from requests WHERE DAY(requests.Submission_DateTime) > DAY(CURRENT_TIMESTAMP) - ? * 7 AND DAY(requests.Submission_DateTime) < DAY(CURRENT_TIMESTAMP) - ? * 7 + 7 AND requests.Solve_Datetime IS NOT NULL GROUP BY YEAR(requests.Submission_DateTime),MONTH(requests.Submission_DateTime),DAY(requests.Submission_DateTime) ");
-  $request->bindParam(1, $back_time);
-  $request->bindParam(2, $back_time);
+  $request = $bdd->prepare("SELECT
+      AVG(DATEDIFF(Solve_Datetime, Submission_Datetime)) * 24 +
+      AVG(EXTRACT(HOUR FROM TIMEDIFF(Solve_Datetime, Submission_Datetime))) +
+      AVG(EXTRACT(MINUTE FROM TIMEDIFF(Solve_Datetime, Submission_Datetime))) / 60
+    AS Solve_Duration,
+    WEEKDAY(Processing_Datetime) AS Weekday,
+    WEEK(Processing_Datetime) AS Week
+  FROM
+      requests
+  WHERE
+      Submission_Datetime IS NOT NULL
+      AND Solve_Datetime IS NOT NULL
+      AND WEEK(Processing_Datetime) = WEEK(NOW()) + ?
+      AND WEEKDAY(Processing_Datetime) IN(0, 1, 2, 3, 4)");
+    $request->bindParam(1, $back_time);
 }
 else
 {
-  $request = $bdd->prepare("SELECT MONTH(requests.Submission_Datetime) AS month, CAST(AVG(requests.Solve_Datetime - requests.Submission_Datetime)AS DATE) AS VALUE from requests WHERE DAY(requests.Submission_DateTime) > DAY(CURRENT_TIMESTAMP) - ? * 365 AND DAY(requests.Submission_DateTime) < DAY(CURRENT_TIMESTAMP) - ? * 365 + 365 AND requests.Solve_Datetime IS NOT NULL GROUP BY YEAR(requests.Submission_DateTime),MONTH(requests.Submission_DateTime)");
+  $request = $bdd->prepare("SELECT
+      AVG(DATEDIFF(Solve_Datetime, Submission_Datetime)) * 24 +
+      AVG(EXTRACT(HOUR FROM TIMEDIFF(Solve_Datetime, Submission_Datetime))) +
+      AVG(EXTRACT(MINUTE FROM TIMEDIFF(Solve_Datetime, Submission_Datetime))) / 60
+    AS Solve_Duration,
+    Month(Processing_Datetime) AS Month,
+    YEAR(Processing_Datetime) AS Year
+FROM
+    requests
+WHERE
+    Submission_Datetime IS NOT NULL
+    AND Solve_Datetime IS NOT NULL
+    AND YEAR(Processing_Datetime) = YEAR(NOW()) - ?");
   $request->bindParam(1, $back_time);
-  $request->bindParam(2, $back_time);
 }
 $request->execute();
-
+$data = $request->fetch();
 ?>
 
 function createTimeChart() {
@@ -60,62 +83,41 @@ var chart = new Chart(ctx,
       <?php
       if (!strcmp("week", $time))
       {
+        $week_num = $data['Week'];
         echo  "labels: ['Monday', 'Tuesday', 'Wedneday', 'Thursday', 'Friday'],";
         $chain="data: [";
-        $tmptab = array(
-          1=>date(DATE_ATOM, mktime(0, 0, 0, 0, 0, 0)),
-          2=>date(DATE_ATOM, mktime(0, 0, 0, 0, 0, 0)),
-          3=>date(DATE_ATOM, mktime(0, 0, 0, 0, 0, 0)),
-          4=>date(DATE_ATOM, mktime(0, 0, 0, 0, 0, 0)),
-          5=>date(DATE_ATOM, mktime(0, 0, 0, 0, 0, 0)),
-          6=>date(DATE_ATOM, mktime(0, 0, 0, 0, 0, 0)),
-          7=>date(DATE_ATOM, mktime(0, 0, 0, 0, 0, 0)),
-        );
-        while ($Cdata = $request->fetch())
-        {
-          $tmptab[$Cdata['DOW']]=$Cdata['VALUE'];
+        for ($i = 0; $i < 5; $i++) {
+          if ($data['Weekday'] == $i && $data['Solve_Duration']) {
+            $chain .= $data['Solve_Duration'].",";
+            $data = $request->fetch();
+          }
+          else {
+            $chain .= "0,";
+          }
         }
-        for($i = 2;$i < 7;$i++)
-        {
-          $chain.="'".$tmptab[$i]."',";
-        }
-        $chain =rtrim($chain,",");
         $chain.="],";
       }
       else
       {
+        $week_num = $data['Year'];
         echo "labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July','August','September','October','November','December'],";
         $chain="data: [";
-        $tmptab = array(
-          1=>date(DATE_ATOM, mktime(0, 0, 0, 0, 0, 0)),
-          2=>date(DATE_ATOM, mktime(0, 0, 0, 0, 0, 0)),
-          3=>date(DATE_ATOM, mktime(0, 0, 0, 0, 0, 0)),
-          4=>date(DATE_ATOM, mktime(0, 0, 0, 0, 0, 0)),
-          5=>date(DATE_ATOM, mktime(0, 0, 0, 0, 0, 0)),
-          6=>date(DATE_ATOM, mktime(0, 0, 0, 0, 0, 0)),
-          7=>date(DATE_ATOM, mktime(0, 0, 0, 0, 0, 0)),
-          8=>date(DATE_ATOM, mktime(0, 0, 0, 0, 0, 0)),
-          9=>date(DATE_ATOM, mktime(0, 0, 0, 0, 0, 0)),
-          10=>date(DATE_ATOM, mktime(0, 0, 0, 0, 0, 0)),
-          11=>date(DATE_ATOM, mktime(0, 0, 0, 0, 0, 0)),
-          12=>date(DATE_ATOM, mktime(0, 0, 0, 0, 0, 0)),
-        );
-        while ($Cdata = $request->fetch())
-        {
-          $tmptab[$Cdata['month']]=$Cdata['VALUE'];
+        for ($i = 1; $i < 13; $i++) {
+          if ($data['Month'] == $i && $data['Solve_Duration']) {
+            $chain .= $data['Solve_Duration'].",";
+            $data = $request->fetch();
+          }
+          else {
+            $chain .= "0,";
+          }
         }
-        for($i = 1;$i < 13;$i++)
-        {
-          $chain.="'".$tmptab[$i]."',";
-        }
-        $chain = rtrim($chain,",");
         $chain.="],";
       }
       ?>
 
       datasets:
       [{
-        label: 'average time of resolution tickets',
+        label: 'Average duration (in hours) for tickets resolution in <?php if ($time == "week") echo "week ".$week_num; else echo "year ".$week_num; ?>',
         backgroundColor: 'rgb(255, 99, 132)',
         borderColor: 'rgb(255, 99, 132)',
         <?php echo $chain; ?>

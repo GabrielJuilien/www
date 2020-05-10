@@ -98,7 +98,7 @@ function createOperatorChart() {
           echo  "labels: ['Monday', 'Tuesday', 'Wedneday', 'Thursday', 'Friday'],";
           $chain = "data: [";
           for ($i = 0; $i < 5; $i++) {
-            if ($data['Weekday'] == $i) {
+            if ($data['Weekday'] == $i && $data['Processed_Requests']) {
               $chain .= $data['Processed_Requests'].",";
               $data = $request->fetch();
             }
@@ -113,7 +113,7 @@ function createOperatorChart() {
           $week_num = $data['Year'];
           echo "labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July','August','September','October','November','December'],";
           $chain="data: [";
-          for ($i = 1; $i < 13; $i++) {
+          for ($i = 1; $i < 13; $i++ && $data['Processed_Requests']) {
             if ($data['Month'] == $i) {
               $chain .= $data['Processed_Requests'].",";
               $data = $request->fetch();

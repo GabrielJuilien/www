@@ -197,7 +197,7 @@ else {
             <div class="button" id="display_performances">
               <p>
                 <text>Performance charts</text>
-                <img class="right_arrow" src="image/right-arrow.png"/>
+                <img class="right_arrow" src="image/charts.png"/>
               </p>
             </div>
             <hr class="separator"/>
