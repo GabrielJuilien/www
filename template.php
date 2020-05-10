@@ -220,7 +220,7 @@ else {
           <hr class="separator"/>
         </div>
       </div>
-      <div id="content">
+      <div id="content" class="scrollable">
       </div>
   </div>
 

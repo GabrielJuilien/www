@@ -177,10 +177,9 @@ body {
 
   text-align: left;
 
-  min-height: 700px;
-  width: 967px;
-  max-height: 850px;
-  overflow-y:auto;
+  height: 85vh;
+  width: 60vw;
+  overflow-y:scroll;
 
   border: 2px solid;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
