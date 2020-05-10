@@ -128,13 +128,12 @@ function switch_time() {
   else {
     current_time = "week";
   }
-
+current_date = 0;
   switchChart(chartToDisplay);
 }
 
 function switchChart(chart_type) {
   chartToDisplay = chart_type;
-  current_date = 0;
   document.getElementById('charts').innerHTML = '<canvas id="myChart"></canvas>';
   switch(chart_type) {
     case "none":

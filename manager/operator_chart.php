@@ -40,25 +40,52 @@ if (!isset($_POST['ID_Operator'])) {
 
 if(!strcmp("week", $time))
 {
-  $request = $bdd->prepare("SELECT DAYOFWEEK(requests.Submission_Datetime) AS DOW, COUNT(requests.ID_Request) AS count from requests WHERE DAY(requests.Submission_DateTime)>DAY(CURRENT_TIMESTAMP) - ? * 7 AND DAY(requests.Submission_DateTime) < DAY(CURRENT_TIMESTAMP) - ? * 7 + 7 AND requests.ID_Operator= ? GROUP BY YEAR(requests.Submission_DateTime),MONTH(requests.Submission_DateTime),DAY(requests.Submission_DateTime) ");
-  $request->bindParam(1, $back_time);
+  $request = $bdd->prepare("SELECT
+        COUNT(ID_Request) AS Processed_Requests,
+        WEEKDAY(Processing_Datetime) AS Weekday,
+        WEEK(Processing_Datetime) AS Week
+    FROM
+        requests
+    WHERE
+        Processing_Datetime IS NOT NULL
+        AND ID_Operator = ?
+        AND WEEK(Processing_Datetime) = WEEK(NOW()) + ?
+        AND WEEKDAY(Processing_Datetime) IN(0, 1, 2, 3, 4)
+    GROUP BY
+        WEEKDAY(Processing_Datetime)
+    ORDER BY
+    WEEKDAY(Processing_Datetime)");
+  $request->bindParam(1, $_POST['ID_Operator']);
   $request->bindParam(2, $back_time);
 }
 else
 {
-  $request = $bdd->prepare("SELECT MONTH(requests.Submission_Datetime) AS month, COUNT(requests.ID_Request) AS count from requests WHERE DAY(requests.Submission_DateTime)>DAY(CURRENT_TIMESTAMP) - ? * 365 AND DAY(requests.Submission_DateTime) < DAY(CURRENT_TIMESTAMP) - ? * 365 + 365 AND requests.ID_Operator = ? GROUP BY YEAR(requests.Submission_DateTime),MONTH(requests.Submission_DateTime)");
-  $request->bindParam(1, $back_time);
+  $request = $bdd->prepare("SELECT
+        COUNT(ID_Request) AS Processed_Requests,
+        MONTH(Processing_Datetime) AS Month,
+        YEAR(Processing_Datetime) AS Year
+    FROM
+        requests
+    WHERE
+        Processing_Datetime IS NOT NULL
+        AND ID_Operator = ?
+        AND YEAR(Processing_Datetime) = YEAR(NOW()) + ?
+    GROUP BY
+        MONTH(Processing_Datetime)
+    ORDER BY
+        MONTH(Processing_Datetime)");
+  $request->bindParam(1, $_POST['ID_Operator']);
   $request->bindParam(2, $back_time);
 }
-$request->bindParam(3, $_POST['ID_Operator']);
 $request->execute();
+$data = $request->fetch()
 ?>
 
 function createOperatorChart() {
   var ctx = document.getElementById('myChart').getContext('2d');
   var chart = new Chart(ctx,
     {
-      // The type of chart we want to create10001
+      // The type of chart we want to create
       type: 'bar',
 
       // The data for our dataset
@@ -67,66 +94,43 @@ function createOperatorChart() {
         <?php
         if(!strcmp("week", $time))
         {
-          echo  "labels: ['Monday', 'Tuesday', 'Wedneday', 'Thursday', 'Friday'],";?>
-          <?php
-          $chain="data: [";
-          $tmptab = array(
-            1=>0,
-            2=>0,
-            3=>0,
-            4=>0,
-            5=>0,
-            6=>0,
-            7=>0,
-          );
-          while ($Cdata = $request->fetch())
-          {
-            $tmptab[$Cdata['DOW']]=$Cdata['count'];
+          $week_num = $data['Week'];
+          echo  "labels: ['Monday', 'Tuesday', 'Wedneday', 'Thursday', 'Friday'],";
+          $chain = "data: [";
+          for ($i = 0; $i < 5; $i++) {
+            if ($data['Weekday'] == $i) {
+              $chain .= $data['Processed_Requests'].",";
+              $data = $request->fetch();
+            }
+            else {
+              $chain .= "0,";
+            }
           }
-          for($i = 2;$i < 7;$i++)
-          {
-            $chain.="'".$tmptab[$i]."',";
-          }
-          $chain =rtrim($chain,",");
           $chain.="],";
         }
         else
         {
+          $week_num = $data['Year'];
           echo "labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July','August','September','October','November','December'],";
           $chain="data: [";
-          $tmptab = array(
-            1=>0,
-            2=>0,
-            3=>0,
-            4=>0,
-            5=>0,
-            6=>0,
-            7=>0,
-            8=>0,
-            9=>0,
-            10=>0,
-            11=>0,
-            12=>0,
-          );
-          while ($Cdata = $request->fetch())
-          {
-            $tmptab[$Cdata['month']]=$Cdata['count'];
+          for ($i = 1; $i < 13; $i++) {
+            if ($data['Month'] == $i) {
+              $chain .= $data['Processed_Requests'].",";
+              $data = $request->fetch();
+            }
+            else {
+              $chain .= "0,";
+            }
           }
-          for($i = 1;$i < 13;$i++)
-          {
-            $chain.="'".$tmptab[$i]."',";
-          }
-          $chain =rtrim($chain,",");
           $chain.="],";
         }
         ?>
         datasets:
         [{
-          label: 'Number of requests processd by operator <?php echo $_POST['ID_Operator'] ?>',
+          label: 'Number of requests processd by operator <?php echo $_POST['ID_Operator']; ?> during <?php if ($time == "week") echo "week ".$week_num; else echo "year ".$week_num; ?>',
           backgroundColor: 'rgb(255, 99, 132)',
           borderColor: 'rgb(255, 99, 132)',
-          <?php echo $chain ;
-          ?>
+          <?php echo $chain; ?>
         }]
       }
     },
