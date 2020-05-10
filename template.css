@@ -397,6 +397,10 @@ Request transfer_request
   max-width: 100%;
 }
 
+#charts_buttons {
+  margin-top: 80px;
+}
+
 #charts_buttons button {
   padding: 0px;
   margin: 0px;
@@ -406,7 +410,6 @@ Request transfer_request
   height: 50px;
   width: 33%;
   font-size: 20px;
-  margin-bottom: 15px;
 }
 
 #charts_buttons button:hover, #chart_quit button:hover {
@@ -418,9 +421,9 @@ Request transfer_request
 Charts empty division
 */
 #charts {
-  height: 500px;
+  height: 540px;
   width: 100%;
-  display: none;
+  display: block;
 }
 
 /*

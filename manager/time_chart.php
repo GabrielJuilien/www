@@ -17,15 +17,15 @@ catch(PDOException $e) {
   $e->getMessage();
 }
 
-if (isset($_GET['time'])) {
-  $time = $_GET['time'];
+if (isset($_POST['time'])) {
+  $time = $_POST['time'];
 }
 else {
   $time = "week";
 }
 
-if (isset($_GET['back_time'])) {
-    $back_time = $_GET['back_time']
+if (isset($_POST['back_time'])) {
+    $back_time = $_POST['back_time'];
 }
 else {
   $back_time = 0;
@@ -33,22 +33,21 @@ else {
 
 if (!strcmp("week", $time))
 {
-  $request = $bdd->prepare("SELECT DAYOFWEEK(requests.Submission_Datetime) AS DOW, CAST(AVG(requests.Solve_Datetime - requests.Submission_Datetime)AS DATE ) AS VALUE  from requests WHERE DAY(requests.Submission_DateTime) > DAY(CURRENT_TIMESTAMP) - ? AND DAY(requests.Submission_DateTime) < DAY(CURRENT_TIMESTAMP) - ? + 7 AND requests.Solve_Datetime IS NOT NULL GROUP BY YEAR(requests.Submission_DateTime),MONTH(requests.Submission_DateTime),DAY(requests.Submission_DateTime) ");
-  $request->bindParam(1, 7 * $back_time);
-  $request->bindParam(2, 7 * $back_time);
+  $request = $bdd->prepare("SELECT DAYOFWEEK(requests.Submission_Datetime) AS DOW, CAST(AVG(requests.Solve_Datetime - requests.Submission_Datetime)AS DATE ) AS VALUE  from requests WHERE DAY(requests.Submission_DateTime) > DAY(CURRENT_TIMESTAMP) - ? * 7 AND DAY(requests.Submission_DateTime) < DAY(CURRENT_TIMESTAMP) - ? * 7 + 7 AND requests.Solve_Datetime IS NOT NULL GROUP BY YEAR(requests.Submission_DateTime),MONTH(requests.Submission_DateTime),DAY(requests.Submission_DateTime) ");
+  $request->bindParam(1, $back_time);
+  $request->bindParam(2, $back_time);
 }
 else
 {
-  $request = $bdd->prepare("SELECT MONTH(requests.Submission_Datetime) AS month, CAST(AVG(requests.Solve_Datetime - requests.Submission_Datetime)AS DATE) AS VALUE from requests WHERE DAY(requests.Submission_DateTime) > DAY(CURRENT_TIMESTAMP) - ? AND DAY(requests.Submission_DateTime) < DAY(CURRENT_TIMESTAMP) - ? + 365 AND requests.Solve_Datetime IS NOT NULL GROUP BY YEAR(requests.Submission_DateTime),MONTH(requests.Submission_DateTime)");
-  $request->bindParam(1, 365 * $back_time);
-  $request->bindParam(2, 365 * $back_time);
+  $request = $bdd->prepare("SELECT MONTH(requests.Submission_Datetime) AS month, CAST(AVG(requests.Solve_Datetime - requests.Submission_Datetime)AS DATE) AS VALUE from requests WHERE DAY(requests.Submission_DateTime) > DAY(CURRENT_TIMESTAMP) - ? * 365 AND DAY(requests.Submission_DateTime) < DAY(CURRENT_TIMESTAMP) - ? * 365 + 365 AND requests.Solve_Datetime IS NOT NULL GROUP BY YEAR(requests.Submission_DateTime),MONTH(requests.Submission_DateTime)");
+  $request->bindParam(1, $back_time);
+  $request->bindParam(2, $back_time);
 }
 $request->execute();
 
 ?>
-<canvas id="myChart"></canvas>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
-<script>
+
+function createTimeChart() {
 var ctx = document.getElementById('myChart').getContext('2d');
 var chart = new Chart(ctx,
   {
@@ -136,4 +135,4 @@ var chart = new Chart(ctx,
     }
   }
 );
-</script>
+}

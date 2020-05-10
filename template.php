@@ -10,6 +10,7 @@ class Roles{
   const Admin = 4;
 }
 
+
 try {
   $bdd = new PDO('mysql:dbname=helpdesk;host=localhost', 'helpdesk_default', 'xixn2lCbJe90Xa8n');
 }
@@ -106,6 +107,7 @@ else {
 <head>
   <link rel="stylesheet" href="/template.css"/>
   <title>Dashboard</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
 </head>
 <body>
   <div id="Header">IT helpdesk</div>

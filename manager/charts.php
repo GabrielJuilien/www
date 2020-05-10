@@ -24,13 +24,13 @@ $request->execute();
 <div id="chart_quit">
   <button onclick="switchChart('none')"><img src="/image/cross.png"/></button>
 </div>
-<div id="charts"></div>
+<div id="charts"><canvas id="myChart"></canvas></div>
 <div id="charts_buttons">
   <button onclick="switchChart('time')">Request processing time</button>
   <button onclick="switchChart('general')">Request processed</button>
   <button onclick="switchChart('operator')">Request per operator</button>
 </div>
-
+<script id="chart_script"></script>
 <table id="selector">
   <tr>
     <td>
@@ -38,7 +38,7 @@ $request->execute();
         <h3>Time period</h3>
         Week
         <label class="switch">
-          <input id="time_switch" type="checkbox">
+          <input id="time_switch" type="checkbox" onchange="switch_time()">
           <span class="slider round"></span>
         </label>
         Year
@@ -52,7 +52,7 @@ $request->execute();
     </td>
     <td>
       <div id="operator_selector">
-        <select id="operator_select">
+        <select id="operator_select" onchange="callbackOperatorChart()">
           <?php
           while ($operator = $request->fetch()) {
             ?>
@@ -65,3 +65,5 @@ $request->execute();
     </td>
   </tr>
 </table>
+</body>
+</html>

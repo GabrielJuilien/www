@@ -94,9 +94,7 @@ function handlerUserProfile() {
 }
 
 //Chart switch
-
 var chartToDisplay;
-
 var chart_quit;
 
 var charts_buttons;
@@ -110,50 +108,149 @@ var operator_select;
 var operator_selector;
 
 var current_date = 0;
+var current_time = "week";
 
 function previous() {
   current_date--;
+  switchChart(chartToDisplay);
 }
 
 function next() {
   current_date++;
+  switchChart(chartToDisplay);
+}
+
+function switch_time() {
+  var checkbox = document.getElementById('time_switch');
+  if (checkbox.checked) {
+    current_time = "year";
+  }
+  else {
+    current_time = "week";
+  }
+
+  switchChart(chartToDisplay);
 }
 
 function switchChart(chart_type) {
+  chartToDisplay = chart_type;
+  current_date = 0;
+  document.getElementById('charts').innerHTML = '<canvas id="myChart"></canvas>';
   switch(chart_type) {
     case "none":
-      charts.style.display = "none";
-      chart_quit.style.display = "none";
-      time_selector.style.display = "none";
-      period_selector.style.display = "none";
-      operator_selector.style.display = "none";
-      charts_buttons.style.display = "block";
-      break;
+    chart_quit.style.display = "none";
+    time_selector.style.display = "none";
+    period_selector.style.display = "none";
+    operator_selector.style.display = "none";
+    charts_buttons.style.display = "block";
+    break;
     case "time":
-      charts.style.display = "block";
-      chart_quit.style.display = "block";
-      period_selector.style.display = "block";
-      operator_selector.style.display = "none";
-      time_selector.style.display = "block";
-      charts_buttons.style.display = "none";
-      break;
+    chart_quit.style.display = "block";
+    period_selector.style.display = "block";
+    operator_selector.style.display = "none";
+    time_selector.style.display = "block";
+    charts_buttons.style.display = "none";
+    callbackTimeChart();
+    break;
     case "general":
-      charts.style.display = "block";
-      chart_quit.style.display = "block";
-      period_selector.style.display = "block";
-      operator_selector.style.display = "none";
-      time_selector.style.display = "block";
-      charts_buttons.style.display = "none";
-      break;
+    chart_quit.style.display = "block";
+    period_selector.style.display = "block";
+    operator_selector.style.display = "none";
+    time_selector.style.display = "block";
+    charts_buttons.style.display = "none";
+    callbackGeneralChart();
+    break;
     case "operator":
-      charts.style.display = "block";
-      chart_quit.style.display = "block";
-      period_selector.style.display = "block";
-      operator_selector.style.display = "block";
-      time_selector.style.display = "block";
-      charts_buttons.style.display = "none";
-      break;
+    chart_quit.style.display = "block";
+    period_selector.style.display = "block";
+    operator_selector.style.display = "block";
+    time_selector.style.display = "block";
+    charts_buttons.style.display = "none";
+    callbackOperatorChart();
+    break;
     default:
-      break;
+    break;
   }
+}
+
+//Time chart
+var httpTimeChart = new XMLHttpRequest();
+
+var urlTimeChart = "/manager/time_chart.php";
+
+function handlerTimeChart() {
+  if (httpTimeChart.readyState === XMLHttpRequest.DONE) {
+    page_content.removeChild(document.getElementById('chart_script'));
+    var script = document.createElement("script");
+    script.type = 'text/javascript';
+    script.id = "chart_script";
+    script.innerHTML = httpTimeChart.responseText;
+    page_content.append(script);
+    createTimeChart();
+  }
+}
+
+function callbackTimeChart() {
+  httpTimeChart.onreadystatechange = handlerTimeChart;
+  httpTimeChart.open('POST', urlTimeChart);
+  httpTimeChart.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+
+  var param = "back_time=" + current_date;
+  param += "&time=" + current_time;
+  httpTimeChart.send(param);
+}
+
+//General chart
+var httpGeneralChart = new XMLHttpRequest();
+
+var urlGeneralChart = "/manager/general_chart.php";
+
+function handlerGeneralChart() {
+  if (httpGeneralChart.readyState === XMLHttpRequest.DONE) {
+    page_content.removeChild(document.getElementById('chart_script'));
+    var script = document.createElement("script");
+    script.type = 'text/javascript';
+    script.id = "chart_script";
+    script.innerHTML = httpGeneralChart.responseText;
+    page_content.append(script);
+    createGeneralChart();
+  }
+}
+
+function callbackGeneralChart() {
+  httpGeneralChart.onreadystatechange = handlerGeneralChart;
+  httpGeneralChart.open('POST', urlGeneralChart);
+  httpGeneralChart.setRequestHeader('Content-type', "application/x-www-form-urlencoded");
+
+  var param = "back_time=" + current_date;
+  param += "&time=" + current_time;
+  httpGeneralChart.send(param);
+}
+
+//Operator chart
+var httpOperatorChart = new XMLHttpRequest();
+
+var urlOperatorChart = "/manager/operator_chart.php";
+
+function handlerOperatorChart() {
+  if (httpOperatorChart.readyState === XMLHttpRequest.DONE) {
+    page_content.removeChild(document.getElementById("chart_script"));
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.id = "chart_script";
+    script.innerHTML = httpOperatorChart.responseText;
+    page_content.append(script);
+    createOperatorChart();
+  }
+}
+
+function callbackOperatorChart() {
+  httpOperatorChart.onreadystatechange = handlerOperatorChart;
+  httpOperatorChart.open('POST', urlOperatorChart);
+  httpOperatorChart.setRequestHeader('Content-type', "application/x-www-form-urlencoded");
+
+  var param = "back_time=" + current_date;
+  param += "&time=" + current_time;
+  param += "&ID_Operator=" + operator_select.options[operator_select.selectedIndex].value;
+  httpOperatorChart.send(param);
 }
