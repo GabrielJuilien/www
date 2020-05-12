@@ -160,7 +160,7 @@ function callbackEditRequest(ID_Request) {
 //Discard request changes
 var httpDiscardChanges = new XMLHttpRequest();
 
-var urlDiscardChanges = "/specialist/display_requests.php";
+var urlDiscardChanges = "/specialist/display_tasks.php";
 
 function handlerDiscardChanges() {
   if (httpDiscardChanges.readyState === XMLHttpRequest.DONE) {

@@ -114,4 +114,4 @@ $request->bindParam(2, $ID_Request);
 $request->bindParam(3, $_SESSION['user_id']);
 $request->execute();
 
-header("Location:/specialist/display_requests.php");
+header("Location:/specialist/display_tasks.php");
