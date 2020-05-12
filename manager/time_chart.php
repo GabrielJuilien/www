@@ -48,7 +48,13 @@ if (!strcmp("week", $time))
       AND WEEK(Processing_Datetime) = WEEK(NOW()) + ?
       AND WEEKDAY(Processing_Datetime) IN(0, 1, 2, 3, 4)");
     $request->bindParam(1, $back_time);
-}
+
+    $request2 = $bdd->prepare('SELECT WEEK(NOW()) + ? AS Week');
+    $request2->bindParam(1, $back_time);
+    $request2->execute();
+    $data = $request2->fetch();
+    $week = $data['Week'];
+  }
 else
 {
   $request = $bdd->prepare("SELECT
@@ -63,8 +69,14 @@ FROM
 WHERE
     Submission_Datetime IS NOT NULL
     AND Solve_Datetime IS NOT NULL
-    AND YEAR(Processing_Datetime) = YEAR(NOW()) - ?");
+    AND YEAR(Processing_Datetime) = YEAR(NOW()) + ?");
   $request->bindParam(1, $back_time);
+
+  $request2 = $bdd->prepare('SELECT YEAR(NOW()) + ? AS Year');
+  $request2->bindParam(1, $back_time);
+  $request2->execute();
+  $data = $request2->fetch();
+  $year = $data['Year'];
 }
 $request->execute();
 $data = $request->fetch();
@@ -83,7 +95,6 @@ var chart = new Chart(ctx,
       <?php
       if (!strcmp("week", $time))
       {
-        $week_num = $data['Week'];
         echo  "labels: ['Monday', 'Tuesday', 'Wedneday', 'Thursday', 'Friday'],";
         $chain="data: [";
         for ($i = 0; $i < 5; $i++) {
@@ -99,7 +110,6 @@ var chart = new Chart(ctx,
       }
       else
       {
-        $week_num = $data['Year'];
         echo "labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July','August','September','October','November','December'],";
         $chain="data: [";
         for ($i = 1; $i < 13; $i++) {
@@ -117,7 +127,7 @@ var chart = new Chart(ctx,
 
       datasets:
       [{
-        label: 'Average duration (in hours) for tickets resolution in <?php if ($time == "week") echo "week ".$week_num; else echo "year ".$week_num; ?>',
+        label: 'Average duration (in hours) for tickets resolution in <?php if ($time == "week") echo "week ".$week; else echo "year ".$year; ?>',
         backgroundColor: 'rgb(255, 99, 132)',
         borderColor: 'rgb(255, 99, 132)',
         <?php echo $chain; ?>

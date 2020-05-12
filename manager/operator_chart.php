@@ -57,6 +57,12 @@ if(!strcmp("week", $time))
     WEEKDAY(Processing_Datetime)");
   $request->bindParam(1, $_POST['ID_Operator']);
   $request->bindParam(2, $back_time);
+
+  $request2 = $bdd->prepare('SELECT WEEK(NOW()) + ? AS Week');
+  $request2->bindParam(1, $back_time);
+  $request2->execute();
+  $data = $request2->fetch();
+  $week = $data['Week'];
 }
 else
 {
@@ -76,6 +82,12 @@ else
         MONTH(Processing_Datetime)");
   $request->bindParam(1, $_POST['ID_Operator']);
   $request->bindParam(2, $back_time);
+
+  $request2 = $bdd->prepare('SELECT YEAR(NOW()) + ? AS Year');
+  $request2->bindParam(1, $back_time);
+  $request2->execute();
+  $data = $request2->fetch();
+  $year = $data['Year'];
 }
 $request->execute();
 $data = $request->fetch()
@@ -94,7 +106,6 @@ function createOperatorChart() {
         <?php
         if(!strcmp("week", $time))
         {
-          $week_num = $data['Week'];
           echo  "labels: ['Monday', 'Tuesday', 'Wedneday', 'Thursday', 'Friday'],";
           $chain = "data: [";
           for ($i = 0; $i < 5; $i++) {
@@ -110,7 +121,6 @@ function createOperatorChart() {
         }
         else
         {
-          $week_num = $data['Year'];
           echo "labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July','August','September','October','November','December'],";
           $chain="data: [";
           for ($i = 1; $i < 13; $i++ && $data['Processed_Requests']) {
@@ -127,7 +137,7 @@ function createOperatorChart() {
         ?>
         datasets:
         [{
-          label: 'Number of requests processd by operator <?php echo $_POST['ID_Operator']; ?> during <?php if ($time == "week") echo "week ".$week_num; else echo "year ".$week_num; ?>',
+          label: 'Number of requests processd by operator <?php echo $_POST['ID_Operator']; ?> during <?php if ($time == "week") echo "week ".$week; else echo "year ".$year; ?>',
           backgroundColor: 'rgb(255, 99, 132)',
           borderColor: 'rgb(255, 99, 132)',
           <?php echo $chain; ?>

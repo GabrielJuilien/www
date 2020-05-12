@@ -431,7 +431,7 @@ Charts empty division
 */
 #charts {
   height: 540px;
-  width: 100%;
+  width: auto;
   display: block;
 }
 
@@ -440,8 +440,10 @@ Operator selection
 */
 
 #selector {
-  width: 100%;
-  bottom: 0px;
+  position: absolute;
+  margin-top: 25px;
+  width: auto;
+  bottom: 20px;
 }
 
 #selector td {
