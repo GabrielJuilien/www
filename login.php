@@ -14,7 +14,7 @@ if (!isset($_SESSION['user_id'])) {
           <form action="template.php" method="post">
             <input type="text" name="user_login" placeholder="Login"/><br />
             <input type="password" name="user_password" placeholder="Password"/><br />
-            <input type="submit" Value="Submit">
+            <input id="login_button" type="submit" Value="Log in">
           </form>
         </div>
       </section>
